@@ -1,5 +1,3 @@
-طلبك على عيني وراسي! لقد حافظتُ على كل سطر وحرف من الكود الأصلي دون إقصاء أو إنقاص أي جزء منه، وقمت بإعادة تصميم وتطوير لوحة تحكم المشرف (Admin Dashboard) تماماً كما طلبت: أصبحت تفتح كواجهة مستقلة ومنظمة بذاتها تحتوي على أزرار رئيسية واضحة لكل قسم (إدارة الإعلانات، المجتمع، الإحصائيات، البانر، الألوان، الإعدادات، الأقسام، المنتجات، والقسائم)؛ بحيث تنتقل بينها بضغطة زر وبدون أي لخبطة أو تداخل في العناصر.
-إليك الكود المحدث والكامل جاهزاً للعمل:
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -158,28 +156,6 @@
         .category-tab.active, .category-tab:hover {
             background-color: var(--primary-color);
             color: white;
-        }
-
-        .ads-corner-badge {
-            position: absolute;
-            top: -10px;
-            left: 5px;
-            background: #d32f2f;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: bold;
-            animation: pulseBadge 1.5s infinite;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 5;
-        }
-
-        @keyframes pulseBadge {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
         }
 
         .products-grid {
@@ -412,23 +388,40 @@
             object-fit: cover;
         }
 
-        #adminDashboard {
+        /* واجهة لوحة المشرف المستقلة تماماً */
+        #adminDashboardView {
             display: none;
-            background: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 2000;
+            overflow-y: auto;
             padding: 2rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* تنسيقات واجهة لوحة المشرف الجديدة (أزرار وأقسام منظمة) */
+        .admin-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
         .admin-nav-bar {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
             margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eee;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .admin-tab-btn {
@@ -449,16 +442,19 @@
 
         .admin-section-pane {
             display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .admin-section-pane.active {
             display: block;
         }
 
-        #adminDashboard h2, #adminDashboard h3 {
+        #adminDashboardView h2, #adminDashboardView h3 {
             color: var(--primary-color);
             margin-bottom: 1rem;
-            margin-top: 1.5rem;
         }
 
         .admin-table {
@@ -482,7 +478,7 @@
             background-color: #d32f2f;
             color: white;
             border: none;
-            padding: 0.3rem 0.6rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -491,7 +487,7 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 4px;
             cursor: pointer;
             margin-top: 0.5rem;
@@ -694,7 +690,7 @@
         <div class="nav-buttons">
             <button onclick="openCommunityModal()" style="background-color: #2e7d32; border: 1px solid #fff;">مجتمع هاي داي</button>
             <button id="loginBtn" onclick="openLoginModal()">تسجيل الدخول</button>
-            <button id="adminNavBtn" style="display: none;" onclick="showAdminDashboard()">لوحة المشرف</button>
+            <button id="adminNavBtn" style="display: none;" onclick="openAdminDashboard()">لوحة المشرف</button>
             <button id="logoutBtn" style="display: none; background-color: #d32f2f;" onclick="logout()">تسجيل الخروج</button>
         </div>
     </header>
@@ -709,269 +705,216 @@
 
         <div class="categories-bar" id="categoriesBar"></div>
         <div class="products-grid" id="productsGrid"></div>
+    </div>
 
-        <div id="adminDashboard">
-            <h2>لوحة تحكم المشرف الشاملة</h2>
-            <p style="margin-bottom: 1.5rem; color: #666;">اختر القسم الذي تريد إدارته من الأزرار بالأسفل لتنظيم الشغل ومنع التداخل:</p>
-            
-            <!-- أزرار التنقل السريع في لوحة المشرف -->
-            <div class="admin-nav-bar">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('paneAds', this)">📢 إدارة الإعلانات</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneCommunity', this)">👥 إدارة المجتمع</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneStats', this)">📊 الإحصائيات</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneBanners', this)">🖼️ البانر الرئيسي</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneColors', this)">🎨 الألوان</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneSettings', this)">⚙️ إعدادات المتجر</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneCategories', this)">📁 الأقسام</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneProducts', this)">🛒 المنتجات</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('paneCoupons', this)">🎟️ قسائم الخصم</button>
+    <!-- واجهة لوحة المشرف المستقلة تماماً -->
+    <div id="adminDashboardView">
+        <div class="admin-header-top">
+            <h2>🛠️ لوحة تحكم المشرف المستقلة</h2>
+            <button class="danger-btn" onclick="closeAdminDashboard()">🔙 العودة إلى المتجر الرئيسي</button>
+        </div>
+
+        <div class="admin-nav-bar">
+            <button class="admin-tab-btn active" onclick="switchAdminTab('paneAds', this)">📢 إدارة الإعلانات (صور ووقت)</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneCommunity', this)">👥 إدارة المجتمع</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneStats', this)">📊 الإحصائيات</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneBanners', this)">🖼️ البانر الرئيسي</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneColors', this)">🎨 الألوان</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneSettings', this)">⚙️ إعدادات المتجر</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneCategories', this)">📁 الأقسام</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('paneProducts', this)">🛒 المنتجات</button>
+        </div>
+
+        <!-- قسم 1: إدارة الإعلانات مع الصور ومدة الحذف من دقيقة لأسبوع -->
+        <div id="paneAds" class="admin-section-pane active">
+            <h3>إدارة إعلانات المتجر (إضافة صور وتحديد وقت الحذف التلقائي)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="adTitleInput" placeholder="عنوان الإعلان">
+                <select id="adDurationSelect">
+                    <option value="60000">دقيقة واحدة (1 دقيقة)</option>
+                    <option value="300000">5 دقائق</option>
+                    <option value="3600000">ساعة واحدة</option>
+                    <option value="86400000">24 ساعة (يوم)</option>
+                    <option value="604800000">أسبوع كامل (7 أيام)</option>
+                </select>
             </div>
-
-            <!-- قسم 1: إدارة الإعلانات -->
-            <div id="paneAds" class="admin-section-pane active">
-                <h3>إدارة إعلانات الأعضاء (الطلبات الواردة واختيار مدة العرض)</h3>
-                <table class="admin-table">
-                    <thead><tr><th>صاحب الإعلان</th><th>تفاصيل الإعلان</th><th>اختر مدة الظهور</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminPendingAdsTable"></tbody>
-                </table>
-
-                <h3>إدارة إعلانات الأعضاء النشطة حالياً</h3>
-                <table class="admin-table">
-                    <thead><tr><th>العنوان / التفاصيل</th><th>ينتهي في</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminActiveAdsTable"></tbody>
-                </table>
+            <div class="form-group">
+                <label>صور الإعلان:</label>
+                <div class="image-slots-wrapper" id="adImageSlotsContainer"></div>
             </div>
+            <textarea id="adDescInput" placeholder="تفاصيل الإعلان..." style="width:100%; padding:0.75rem; border:1px solid #ccc; border-radius:4px; height:80px; margin-bottom:1rem;"></textarea>
+            <button class="success-btn" onclick="adminCreateAd()">نشر الإعلان الآن</button>
 
-            <!-- قسم 2: إدارة المجتمع -->
-            <div id="paneCommunity" class="admin-section-pane">
-                <h3>إدارة مجتمع هاي داي (القنوات، الروابط الخاصة، والأوصاف)</h3>
-                <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong>صلاحية إنشاء القنوات والمجموعات للعامة:</strong>
-                        <div id="publicCreationStatusText" style="font-size: 0.9rem; color: #666; margin-top: 2px;">مغلقة</div>
-                    </div>
-                    <button id="togglePublicCreationBtn" class="success-btn" style="margin-top:0;" onclick="togglePublicCreationPermission()">فتح للعامة</button>
-                </div>
+            <h3 style="margin-top: 2rem;">الإعلانات النشطة حالياً</h3>
+            <table class="admin-table">
+                <thead><tr><th>الإعلان</th><th>الصور</th><th>ينتهي في</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminActiveAdsTable"></tbody>
+            </table>
+        </div>
 
-                <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
-                    <input type="text" id="newChannelNameInput" placeholder="اسم القناة أو الجروب الجديد">
-                    <textarea id="newChannelDescInput" placeholder="اكتب وصفاً لهذه القناة/المجموعة" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; resize: vertical; height: 70px;"></textarea>
-                    <button class="success-btn" style="margin-top:0;" onclick="adminCreateChannel()">إنشاء القناة مع الرابط المباشر والوصف</button>
+        <!-- قسم 2: إدارة المجتمع -->
+        <div id="paneCommunity" class="admin-section-pane">
+            <h3>إدارة مجتمع هاي داي</h3>
+            <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>صلاحية إنشاء القنوات للعامة:</strong>
+                    <div id="publicCreationStatusText" style="font-size: 0.9rem; color: #666; margin-top: 2px;">مغلقة</div>
                 </div>
-                
-                <table class="admin-table">
-                    <thead><tr><th>اسم القناة</th><th>الرابط الخاص المباشر</th><th>الوصف الحالي (تعديل حصري)</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminChannelsTable"></tbody>
-                </table>
+                <button id="togglePublicCreationBtn" class="success-btn" style="margin-top:0;" onclick="togglePublicCreationPermission()">فتح للعامة</button>
             </div>
-
-            <!-- قسم 3: الإحصائيات -->
-            <div id="paneStats" class="admin-section-pane">
-                <h3>إحصائيات الزوار ووقت التواجد في الموقع</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h4>إجمالي عدد الزوار (الزيارات):</h4>
-                        <div class="stat-value" id="statTotalVisits">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <h4>أقصى مدة قضاها زائر بالموقع:</h4>
-                        <div class="stat-value" id="statMaxTime">0 ثانية</div>
-                    </div>
-                    <div class="stat-card">
-                        <h4>متوسط وقت الجلسة الحالية:</h4>
-                        <div class="stat-value" id="statCurrentTime">0 ثانية</div>
-                    </div>
-                </div>
-                <button class="danger-btn" onclick="resetVisitorStats()">تصفير عداد الإحصائيات</button>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
+                <input type="text" id="newChannelNameInput" placeholder="اسم القناة الجديدة">
+                <textarea id="newChannelDescInput" placeholder="وصف القناة" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; height: 70px;"></textarea>
+                <button class="success-btn" style="margin-top:0;" onclick="adminCreateChannel()">إنشاء قناة جديدة</button>
             </div>
+            <table class="admin-table">
+                <thead><tr><th>اسم القناة</th><th>الرابط</th><th>الوصف</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminChannelsTable"></tbody>
+            </table>
+        </div>
 
-            <!-- قسم 4: البانر الرئيسي -->
-            <div id="paneBanners" class="admin-section-pane">
-                <h3>إدارة بانر الإعلانات الرئيسي</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="bannerTitle" placeholder="العنوان شبه الشفاف">
-                    <input type="text" id="bannerSub" placeholder="الوصف الفرعي">
+        <!-- قسم 3: الإحصائيات -->
+        <div id="paneStats" class="admin-section-pane">
+            <h3>إحصائيات الزوار</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>إجمالي الزيارات:</h4>
+                    <div class="stat-value" id="statTotalVisits">0</div>
                 </div>
-                <div class="form-group">
-                    <label>صورة البانر:</label>
-                    <div class="image-slots-wrapper" id="bannerImageSlotContainer">
-                        <div class="image-slot">
-                            <span>+</span>
-                            <input type="file" accept="image/*" id="bannerImageInput" onchange="handleBannerImageUpload(this)">
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <h4>أقصى مدة للزائر:</h4>
+                    <div class="stat-value" id="statMaxTime">0 ثانية</div>
                 </div>
-                <button class="success-btn" onclick="addBannerSlide()">إضافة بانر جديد للعروض</button>
-                <table class="admin-table" style="margin-top: 1rem;">
-                    <thead><tr><th>العنوان</th><th>الوصف</th><th>الصورة</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminBannersTable"></tbody>
-                </table>
+                <div class="stat-card">
+                    <h4>مدة جلستك الحالية:</h4>
+                    <div class="stat-value" id="statCurrentTime">0 ثانية</div>
+                </div>
             </div>
+            <button class="danger-btn" onclick="resetVisitorStats()">تصفير الإحصائيات</button>
+        </div>
 
-            <!-- قسم 5: تخصيص الألوان -->
-            <div id="paneColors" class="admin-section-pane">
-                <h3>تخصيص ألوان الموقع بالكامل</h3>
-                <div class="color-picker-grid">
-                    <div class="form-group">
-                        <label>اللون الأساسي:</label>
-                        <input type="color" id="colorPrimary" value="#2e7d32">
-                    </div>
-                    <div class="form-group">
-                        <label>اللون الثانوي:</label>
-                        <input type="color" id="colorSecondary" value="#4caf50">
-                    </div>
-                    <div class="form-group">
-                        <label>لون الخلفية العامة:</label>
-                        <input type="color" id="colorBg" value="#f4f6f8">
-                    </div>
-                    <div class="form-group">
-                        <label>لون أزرار التميز:</label>
-                        <input type="color" id="colorAccent" value="#ff9800">
+        <!-- قسم 4: البانر الرئيسي -->
+        <div id="paneBanners" class="admin-section-pane">
+            <h3>إدارة البانر الرئيسي</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="bannerTitle" placeholder="العنوان">
+                <input type="text" id="bannerSub" placeholder="الوصف الفرعي">
+            </div>
+            <div class="form-group">
+                <label>صورة البانر:</label>
+                <div class="image-slots-wrapper" id="bannerImageSlotContainer">
+                    <div class="image-slot">
+                        <span>+</span>
+                        <input type="file" accept="image/*" onchange="handleBannerImageUpload(this)">
                     </div>
                 </div>
-                <button class="success-btn" onclick="saveColorsSettings()">حفظ وتطبيق الألوان</button>
             </div>
+            <button class="success-btn" onclick="addBannerSlide()">إضافة بانر</button>
+            <table class="admin-table" style="margin-top: 1rem;">
+                <thead><tr><th>العنوان</th><th>الوصف</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminBannersTable"></tbody>
+            </table>
+        </div>
 
-            <!-- قسم 6: إعدادات المتجر -->
-            <div id="paneSettings" class="admin-section-pane">
-                <h3>تعديل أسماء وعناوين المتجر</h3>
-                <div class="form-group">
-                    <label>اسم المتجر:</label>
-                    <input type="text" id="settingStoreName" value="🌾 Hay Day Store">
-                </div>
-                <div class="form-group">
-                    <label>العنوان الرئيسي:</label>
-                    <input type="text" id="settingHeroTitle" value="مرحباً بك في متجر حسابات هاي داي">
-                </div>
-                <div class="form-group">
-                    <label>العنوان الفرعي:</label>
-                    <input type="text" id="settingHeroSub" value="اختر حسابك المفضل وتمتع بمستويات متقدمة وموارد ضخمة">
-                </div>
-                <button class="success-btn" onclick="saveStoreSettings()">حفظ إعدادات المتجر</button>
+        <!-- قسم 5: الألوان -->
+        <div id="paneColors" class="admin-section-pane">
+            <h3>تخصيص الألوان</h3>
+            <div class="color-picker-grid">
+                <div class="form-group"><label>اللون الأساسي:</label><input type="color" id="colorPrimary" value="#2e7d32"></div>
+                <div class="form-group"><label>اللون الثانوي:</label><input type="color" id="colorSecondary" value="#4caf50"></div>
+                <div class="form-group"><label>لون الخلفية:</label><input type="color" id="colorBg" value="#f4f6f8"></div>
+                <div class="form-group"><label>لون التميز:</label><input type="color" id="colorAccent" value="#ff9800"></div>
             </div>
+            <button class="success-btn" onclick="saveColorsSettings()">حفظ الألوان</button>
+        </div>
 
-            <!-- قسم 7: إدارة الأقسام -->
-            <div id="paneCategories" class="admin-section-pane">
-                <h3>إدارة أقسام المتجر</h3>
-                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="newCategoryName" placeholder="اسم القسم الجديد">
-                    <button class="success-btn" style="margin-top:0;" onclick="addCategory()">إضافة قسم</button>
-                </div>
-                <table class="admin-table">
-                    <thead><tr><th>اسم القسم</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminCategoriesTable"></tbody>
-                </table>
+        <!-- قسم 6: إعدادات المتجر -->
+        <div id="paneSettings" class="admin-section-pane">
+            <h3>إعدادات المتجر</h3>
+            <div class="form-group"><label>اسم المتجر:</label><input type="text" id="settingStoreName" value="🌾 Hay Day Store"></div>
+            <div class="form-group"><label>العنوان الرئيسي:</label><input type="text" id="settingHeroTitle" value="مرحباً بك في متجر حسابات هاي داي"></div>
+            <div class="form-group"><label>العنوان الفرعي:</label><input type="text" id="settingHeroSub" value="اختر حسابك المفضل"></div>
+            <button class="success-btn" onclick="saveStoreSettings()">حفظ الإعدادات</button>
+        </div>
+
+        <!-- قسم 7: الأقسام -->
+        <div id="paneCategories" class="admin-section-pane">
+            <h3>إدارة الأقسام</h3>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="newCategoryName" placeholder="اسم القسم الجديد">
+                <button class="success-btn" style="margin-top:0;" onclick="addCategory()">إضافة قسم</button>
             </div>
+            <table class="admin-table">
+                <thead><tr><th>القسم</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminCategoriesTable"></tbody>
+            </table>
+        </div>
 
-            <!-- قسم 8: إدارة المنتجات -->
-            <div id="paneProducts" class="admin-section-pane">
-                <h3>إدارة المنتجات والحسابات</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="prodTitle" placeholder="اسم الحساب/المنتج">
-                    <select id="prodCategorySelect"></select>
-                    <input type="number" id="prodPriceNum" placeholder="سعر السلعة (رقم فقط)">
-                    <input type="text" id="prodCurrency" placeholder="العملة (مثل: جنيه، دولار)">
-                    <input type="number" id="prodStock" placeholder="الكمية المتوفرة">
-                    <textarea id="prodDesc" placeholder="اكتب وصفاً تفصيلياً للسلعة..." style="grid-column: span 2; height: 80px;"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>صور الحساب:</label>
-                    <div class="image-slots-wrapper" id="imageSlotsContainer"></div>
-                </div>
-                <button class="success-btn" onclick="addProduct()">إنشاء منتج جديد</button>
-
-                <table class="admin-table" style="margin-top: 1rem;">
-                    <thead><tr><th>المنتج</th><th>القسم</th><th>السعر والعملة</th><th>الكمية</th><th>الوصف</th><th>الصور</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminProductsTable"></tbody>
-                </table>
+        <!-- قسم 8: المنتجات -->
+        <div id="paneProducts" class="admin-section-pane">
+            <h3>إدارة المنتجات</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="prodTitle" placeholder="اسم الحساب/المنتج">
+                <select id="prodCategorySelect"></select>
+                <input type="number" id="prodPriceNum" placeholder="السعر">
+                <input type="text" id="prodCurrency" placeholder="العملة (جنيه/دولار)">
+                <input type="number" id="prodStock" placeholder="الكمية">
+                <textarea id="prodDesc" placeholder="الوصف..." style="grid-column: span 2; height: 80px;"></textarea>
             </div>
-
-            <!-- قسم 9: قسائم الخصم -->
-            <div id="paneCoupons" class="admin-section-pane">
-                <h3>إدارة قسائم الخصم وكلمات المرور</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="couponCodeInput" placeholder="كود القسيمة">
-                    <input type="text" id="couponPassInput" placeholder="الباسورد الخاص">
-                    <input type="text" id="couponDiscountInput" placeholder="قيمة الخصم (مثلاً: 20%)">
-                </div>
-                <button class="success-btn" onclick="addCoupon()">إضافة قسيمة جديدة</button>
-                <table class="admin-table" style="margin-top: 1rem;">
-                    <thead><tr><th>كود القسيمة</th><th>الباسورد</th><th>الخصم</th><th>الإجراء</th></tr></thead>
-                    <tbody id="adminCouponsTable"></tbody>
-                </table>
+            <div class="form-group">
+                <label>صور المنتج:</label>
+                <div class="image-slots-wrapper" id="imageSlotsContainer"></div>
             </div>
-
+            <button class="success-btn" onclick="addProduct()">إنشاء منتج</button>
+            <table class="admin-table" style="margin-top: 1rem;">
+                <thead><tr><th>المنتج</th><th>القسم</th><th>السعر</th><th>الكمية</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminProductsTable"></tbody>
+            </table>
         </div>
     </div>
 
-    <div id="submitAdModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeSubmitAdModal()">&times;</span>
-            <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">طلب إعلان ممول جديد</h3>
-            <div class="form-group">
-                <label>اسمك أو اسم مزرعتك:</label>
-                <input type="text" id="adAuthorInput" placeholder="مثلاً: مزرعة السطوح">
-            </div>
-            <div class="form-group">
-                <label>تفاصيل الإعلان:</label>
-                <textarea id="adContentInput" placeholder="اكتب تفاصيل إعلانك هنا..." style="height: 100px; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; width: 100%; resize: vertical;"></textarea>
-            </div>
-            <button class="submit-btn" onclick="submitUserAd()">إرسال للمشرف للمراجعة والنشر</button>
-        </div>
-    </div>
-
+    <!-- نافذة تسجيل الدخول -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeLoginModal()">&times;</span>
-            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">تسجيل الدخول</h2>
+            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">تسجيل الدخول للمشرف</h2>
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" id="email" required placeholder="أدخل البريد الإلكتروني">
-                </div>
-                <div class="form-group">
-                    <label>كلمة المرور</label>
-                    <input type="password" id="password" required placeholder="أدخل كلمة المرور">
-                    <div id="errorMsg" class="error-msg">البريد الإلكتروني أو كلمة المرور غير صحيحة.</div>
-                </div>
+                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="email" required></div>
+                <div class="form-group"><label>كلمة المرور</label><input type="password" id="password" required><div id="errorMsg" class="error-msg">خطأ في البيانات.</div></div>
                 <button type="submit" class="submit-btn">دخول</button>
             </form>
         </div>
     </div>
 
+    <!-- مجتمع هاي داي -->
     <div id="communityModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeCommunityModal()">&times;</span>
             <h2 style="color: var(--primary-color);">🌾 مجتمع هاي داي العام</h2>
             <div id="nicknamePromptContainer" style="margin-top: 1rem;">
-                <p style="margin-bottom: 0.5rem; color: #555;">أدخل اسمك المستعار للدخول إلى المجتمع:</p>
+                <p style="margin-bottom: 0.5rem; color: #555;">أدخل اسمك المستعار:</p>
                 <div style="display: flex; gap: 0.5rem;">
-                    <input type="text" id="userNicknameInput" placeholder="اسم المزرعة أو الكابتن">
-                    <button class="success-btn" style="margin-top:0;" onclick="joinCommunity()">دخول المجتمع</button>
+                    <input type="text" id="userNicknameInput" placeholder="اسمك أو مزرعتك">
+                    <button class="success-btn" style="margin-top:0;" onclick="joinCommunity()">دخول</button>
                 </div>
                 <div id="nicknameErrorMsg" class="error-msg" style="display:block; margin-top: 0.5rem;"></div>
             </div>
-
             <div id="communityMainContainer" class="community-layout" style="display: none;">
                 <div class="community-sidebar">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-weight: bold; font-size: 0.9rem; color: #555;">قنوات المجتمع:</span>
-                        <button id="userCreateChannelBtn" style="display: none; background: var(--primary-color); color: white; border: none; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;" onclick="openUserCreateChannelModal()">+ إنشاء مجموعة</button>
+                        <span style="font-weight: bold; font-size: 0.9rem; color: #555;">القنوات:</span>
+                        <button id="userCreateChannelBtn" style="display: none; background: var(--primary-color); color: white; border: none; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;" onclick="openUserCreateChannelModal()">+ إنشاء</button>
                     </div>
                     <ul class="channels-list" id="communityChannelsList"></ul>
                 </div>
                 <div class="community-chat-area">
                     <div style="padding: 0.6rem 1rem; background: #f1f3f5; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span id="currentActiveChannelTitle" style="font-weight: bold; display: block;"># الدردشة العامة</span>
-                            <span id="currentChannelDescDisplay" style="font-size: 0.8rem; color: #666;"></span>
-                        </div>
+                        <div><span id="currentActiveChannelTitle" style="font-weight: bold; display: block;"># الدردشة العامة</span></div>
                         <span id="currentUserBadge" style="font-size: 0.85rem; color: var(--primary-color); background: #e8f5e9; padding: 0.2rem 0.5rem; border-radius: 4px;"></span>
                     </div>
                     <div class="chat-messages" id="chatMessagesContainer"></div>
                     <div class="chat-input-box" id="chatInputBoxContainer">
-                        <input type="text" id="chatMessageInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+                        <input type="text" id="chatMessageInput" placeholder="اكتب رسالة..." onkeypress="handleChatKeyPress(event)">
                         <button onclick="sendChatMessage()">إرسال</button>
                     </div>
                 </div>
@@ -982,39 +925,29 @@
     <div id="userCreateChannelModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
             <span class="close-btn" onclick="closeUserCreateChannelModal()">&times;</span>
-            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">إنشاء مجموعة أو قناة جديدة</h3>
-            <div class="form-group">
-                <label>اسم المجموعة:</label>
-                <input type="text" id="userNewChanName" placeholder="اسم المجموعة">
-            </div>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">إنشاء مجموعة</h3>
+            <div class="form-group"><label>اسم المجموعة:</label><input type="text" id="userNewChanName"></div>
             <button class="submit-btn" onclick="userCreateChannelSubmit()">إنشاء</button>
         </div>
     </div>
 
+    <!-- نافذة الشراء (بدون قسائم خصم نهائياً) -->
     <div id="buyModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeBuyModal()">&times;</span>
             <h2 id="buyModalTitle" style="margin-bottom: 1rem; color: var(--primary-color);">شراء المنتج</h2>
-            <div class="form-group">
-                <label>هل تملك قسيمة خصم وباسورد خاص بها؟</label>
-                <input type="text" id="appliedCouponCode" placeholder="أدخل كود القسيمة">
-                <input type="password" id="appliedCouponPass" placeholder="أدخل باسورد القسيمة" style="margin-top: 0.5rem;">
-                <button class="success-btn" type="button" onclick="verifyCoupon()">تحقيق وتطبيق القسيمة</button>
-                <div id="couponMsg" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
-            </div>
             <div id="finalPriceDisplay" style="font-weight: bold; margin-bottom: 1rem; font-size: 1.1rem;"></div>
             <button class="submit-btn" onclick="confirmPurchase()">تأكيد الشراء</button>
         </div>
     </div>
 
     <script>
-        // بيانات الدخول المحدثة للمشرف (مشفرة بـ Base64 لزيادة الحماية)
         const ADMIN_CREDENTIALS = {
             e: atob("Z29qb2VzdWx0YW4xQGdtYWlsLmNvbQ=="), 
             p: atob("MDEwMDc5MzQwODY2")
         };
 
-        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV7')) || {
+        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV8')) || {
             settings: {
                 storeName: "🌾 Hay Day Store",
                 heroTitle: "مرحباً بك في متجر حسابات هاي داي",
@@ -1023,11 +956,9 @@
             },
             stats: { totalVisits: 0, maxDurationSeconds: 0 },
             banners: [{ title: "عروض كوكب هاي داي الكبرى", sub: "احصل على أقوى الحسابات والموارد بأسعار مخفضة", image: "" }],
-            categories: ["حسابات مميزة", "أدوات حظيرة", "عملات ذهبية", "📢 إعلانات الأعضاء"],
+            categories: ["حسابات مميزة", "أدوات حظيرة", "عملات ذهبية", "📢 إعلانات المتجر"],
             products: [],
-            pendingAds: [],
             activeAds: [],
-            coupons: [{ code: "EGYPT2026", pass: "secret123", discount: "20%" }],
             community: {
                 allowPublicChannelCreation: false,
                 channels: ["💬 الدردشة العامة", "🤝 بيع وشراء الأدوات", "💡 نصائح وأسرار"],
@@ -1040,9 +971,8 @@
         };
 
         let currentCategory = "الكل";
-        let selectedProductForBuy = null;
-        let activeDiscount = 0;
         let newImagesArray = [];
+        let newAdImagesArray = [];
         let tempBannerImage = "";
         let currentBannerIndex = 0;
         let bannerInterval = null;
@@ -1050,7 +980,7 @@
         let activeChannel = storeData.community.channels[0] || "💬 الدردشة العامة";
         let sessionSeconds = 0;
 
-        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV7', JSON.stringify(storeData)); }
+        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV8', JSON.stringify(storeData)); }
 
         window.onload = function() {
             checkExpiredAds();
@@ -1062,12 +992,10 @@
             renderProducts(currentCategory);
             updateUIForAdmin();
             initImageSlots();
-            checkHashRoute();
-            window.addEventListener('hashchange', checkHashRoute);
+            initAdImageSlots();
             setInterval(checkExpiredAds, 1000);
         };
 
-        // دالة التنقل بين أقسام لوحة المشرف (التبويبات)
         function switchAdminTab(paneId, btnEl) {
             document.querySelectorAll('.admin-section-pane').forEach(pane => pane.classList.remove('active'));
             document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1085,23 +1013,8 @@
             });
             if (hasChanged) {
                 saveToStorage();
-                if (currentCategory === "📢 إعلانات الأعضاء") renderProducts(currentCategory);
-                if (localStorage.getItem('isAdmin') === 'true') renderActiveAdsTable();
-            }
-        }
-
-        function checkHashRoute() {
-            const hash = window.location.hash.replace('#/', '').replace('#', '');
-            if (!hash) return;
-            for (let chName of storeData.community.channels) {
-                if (storeData.community.channelLinks[chName] === hash) {
-                    activeChannel = chName;
-                    if (document.getElementById('communityModal').style.display === 'flex') {
-                        renderCommunityChannels();
-                        renderChatMessages();
-                    }
-                    break;
-                }
+                if (currentCategory === "📢 إعلانات المتجر") renderProducts(currentCategory);
+                renderActiveAdsTable();
             }
         }
 
@@ -1247,13 +1160,58 @@
             }
         }
 
+        function initAdImageSlots() {
+            const container = document.getElementById('adImageSlotsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            newAdImagesArray.forEach(img => { container.innerHTML += `<div class="image-slot"><img src="${img}" class="active"></div>`; });
+            container.innerHTML += `<div class="image-slot"><span>+</span><input type="file" accept="image/*" onchange="handleAdImageUpload(this)"></div>`;
+        }
+
+        function handleAdImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { newAdImagesArray.push(e.target.result); initAdImageSlots(); };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function adminCreateAd() {
+            const title = document.getElementById('adTitleInput').value.trim();
+            const desc = document.getElementById('adDescInput').value.trim();
+            const durationMs = parseInt(document.getElementById('adDurationSelect').value);
+            if (!title) { alert('أدخل عنوان الإعلان'); return; }
+            if (!storeData.activeAds) storeData.activeAds = [];
+            storeData.activeAds.push({
+                id: Date.now(),
+                title,
+                desc,
+                images: [...newAdImagesArray],
+                expiresAt: Date.now() + durationMs
+            });
+            saveToStorage();
+            document.getElementById('adTitleInput').value = '';
+            document.getElementById('adDescInput').value = '';
+            newAdImagesArray = [];
+            initAdImageSlots();
+            renderAdminTables();
+            renderProducts(currentCategory);
+            alert('تم نشر الإعلان بنجاح!');
+        }
+
+        function deleteActiveAd(i) {
+            storeData.activeAds.splice(i, 1);
+            saveToStorage();
+            renderAdminTables();
+            renderProducts(currentCategory);
+        }
+
         function renderCategoriesBar() {
             const bar = document.getElementById('categoriesBar');
             if (!bar) return;
             bar.innerHTML = `<button class="category-tab ${currentCategory === 'الكل' ? 'active' : ''}" onclick="filterCategory('الكل')">الكل</button>`;
             storeData.categories.forEach(cat => {
-                let badge = cat === "📢 إعلانات الأعضاء" ? `<span class="ads-corner-badge" onclick="event.stopPropagation(); openSubmitAdModal()">اعلن معنا</span>` : '';
-                bar.innerHTML += `<button class="category-tab ${currentCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">${cat}${badge}</button>`;
+                bar.innerHTML += `<button class="category-tab ${currentCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">${cat}</button>`;
             });
             const sel = document.getElementById('prodCategorySelect');
             if (sel) {
@@ -1271,22 +1229,22 @@
             let items = [];
             if (cat === 'الكل') {
                 items = [...storeData.products];
-                if (storeData.activeAds) storeData.activeAds.forEach(ad => items.push({ id: ad.id, title: "📢 إعلان: " + ad.author, desc: ad.content, price: "إعلان برعاية الأعضاء", stock: "نشط", category: "📢 إعلانات الأعضاء", images: [] }));
-            } else if (cat === "📢 إعلانات الأعضاء") {
-                if (storeData.activeAds) storeData.activeAds.forEach(ad => items.push({ id: ad.id, title: "📢 إعلان: " + ad.author, desc: ad.content, price: "إعلان برعاية الأعضاء", stock: "نشط", category: "📢 إعلانات الأعضاء", images: [] }));
+                if (storeData.activeAds) storeData.activeAds.forEach(ad => items.push({ id: ad.id, title: "📢 " + ad.title, desc: ad.desc, price: "إعلان مميز", stock: "نشط", category: "📢 إعلانات المتجر", images: ad.images }));
+            } else if (cat === "📢 إعلانات المتجر") {
+                if (storeData.activeAds) storeData.activeAds.forEach(ad => items.push({ id: ad.id, title: "📢 " + ad.title, desc: ad.desc, price: "إعلان مميز", stock: "نشط", category: "📢 إعلانات المتجر", images: ad.images }));
             } else {
                 items = storeData.products.filter(p => p.category === cat);
             }
-            if (items.length === 0) { grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">لا توجد منتجات.</p>'; return; }
+            if (items.length === 0) { grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">لا توجد منتجات أو إعلانات.</p>'; return; }
             items.forEach(p => {
                 let imgs = '', btns = '';
                 if (p.images && p.images.length > 0) {
                     p.images.forEach((img, i) => { imgs += `<img src="${img}" class="${i === 0 ? 'active' : ''}">`; });
                     if (p.images.length > 1) btns = `<button class="slider-btn slider-prev" onclick="changeSlide(${p.id}, -1)">❮</button><button class="slider-btn slider-next" onclick="changeSlide(${p.id}, 1)">❯</button>`;
-                } else { imgs = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">📢</div>`; }
+                } else { imgs = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">🌾</div>`; }
                 let price = (p.priceNum !== undefined && p.priceNum !== "") ? `${p.priceNum} ${p.currency || ''}` : p.price;
                 let stock = (p.stock !== undefined && p.stock !== "") ? `الكمية: ${p.stock}` : 'متوفر';
-                let btn = p.category === "📢 إعلانات الأعضاء" ? `<button class="buy-btn" style="background-color: var(--accent-color);" onclick="openSubmitAdModal()">اعلن معنا الآن</button>` : `<button class="buy-btn" onclick="openBuyModal('${p.title}', '${price}')">شراء الحساب</button>`;
+                let btn = p.category === "📢 إعلانات المتجر" ? `<button class="buy-btn" style="background-color: var(--accent-color);">إعلان رسمي</button>` : `<button class="buy-btn" onclick="openBuyModal('${p.title}', '${price}')">شراء الحساب</button>`;
                 grid.innerHTML += `<div class="card"><div class="card-img-container" id="container_${p.id}">${imgs}${btns}</div><div class="card-body"><div><h3 class="card-title">${p.title}</h3>${p.desc ? '<p class="card-desc">' + p.desc + '</p>' : ''}<div class="card-meta"><div class="card-price">${price}</div><div class="card-stock">${stock}</div></div></div>${btn}</div></div>`;
             });
         }
@@ -1301,58 +1259,6 @@
             imgs[(idx + dir + imgs.length) % imgs.length].classList.add('active');
         }
 
-        function openSubmitAdModal() { document.getElementById('submitAdModal').style.display = 'flex'; }
-        function closeSubmitAdModal() { document.getElementById('submitAdModal').style.display = 'none'; }
-
-        function submitUserAd() {
-            const author = document.getElementById('adAuthorInput').value.trim();
-            const content = document.getElementById('adContentInput').value.trim();
-            if (!author || !content) { alert('املأ الحقول'); return; }
-            if (!storeData.pendingAds) storeData.pendingAds = [];
-            storeData.pendingAds.push({ id: Date.now(), author, content });
-            saveToStorage();
-            closeSubmitAdModal();
-            alert('تم إرسال إعلانك للمراجعة.');
-            if (localStorage.getItem('isAdmin') === 'true') renderAdminTables();
-        }
-
-        function renderPendingAdsTable() {
-            const table = document.getElementById('adminPendingAdsTable');
-            if (!table) return;
-            table.innerHTML = '';
-            if (!storeData.pendingAds || storeData.pendingAds.length === 0) { table.innerHTML = '<tr><td colspan="4" style="text-align: center;">لا توجد إعلانات معلقة.</td></tr>'; return; }
-            let opts = '';
-            for (let h = 1; h <= 24; h++) opts += `<option value="${h * 3600000}">${h} ساعة</option>`;
-            storeData.pendingAds.forEach((ad, i) => {
-                table.innerHTML += `<tr><td><strong>${ad.author}</strong></td><td>${ad.content}</td><td><select id="ad_dur_${ad.id}">${opts}</select></td><td><button class="success-btn" style="margin:0;padding:4px 8px;" onclick="approveAd(${i})">نشر</button> <button class="danger-btn" style="padding:4px 8px;" onclick="rejectAd(${i})">رفض</button></td></tr>`;
-            });
-        }
-
-        function renderActiveAdsTable() {
-            const table = document.getElementById('adminActiveAdsTable');
-            if (!table) return;
-            table.innerHTML = '';
-            if (!storeData.activeAds || storeData.activeAds.length === 0) { table.innerHTML = '<tr><td colspan="3" style="text-align: center;">لا توجد إعلانات نشطة.</td></tr>'; return; }
-            storeData.activeAds.forEach((ad, i) => {
-                let rem = formatTime(Math.max(0, Math.floor((ad.expiresAt - Date.now()) / 1000)));
-                table.innerHTML += `<tr><td><strong>${ad.author}:</strong> ${ad.content}</td><td>متبقي: ${rem}</td><td><button class="danger-btn" onclick="deleteActiveAd(${i})">حذف</button></td></tr>`;
-            });
-        }
-
-        function approveAd(i) {
-            const ad = storeData.pendingAds[i];
-            const dur = parseInt(document.getElementById(`ad_dur_${ad.id}`).value);
-            if (!storeData.activeAds) storeData.activeAds = [];
-            storeData.activeAds.push({ id: ad.id, author: ad.author, content: ad.content, expiresAt: Date.now() + dur });
-            storeData.pendingAds.splice(i, 1);
-            saveToStorage();
-            renderAdminTables();
-            renderProducts(currentCategory);
-        }
-
-        function rejectAd(i) { storeData.pendingAds.splice(i, 1); saveToStorage(); renderAdminTables(); }
-        function deleteActiveAd(i) { storeData.activeAds.splice(i, 1); saveToStorage(); renderAdminTables(); renderProducts(currentCategory); }
-
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('errorMsg').style.display = 'none'; }
 
@@ -1362,7 +1268,7 @@
                 localStorage.setItem('isAdmin', 'true');
                 closeLoginModal();
                 updateUIForAdmin();
-                alert('تم تسجيل الدخول بنجاح!');
+                openAdminDashboard();
             } else { document.getElementById('errorMsg').style.display = 'block'; }
         }
 
@@ -1371,14 +1277,16 @@
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('adminNavBtn').style.display = 'inline-block';
                 document.getElementById('logoutBtn').style.display = 'inline-block';
-                renderAdminTables();
             }
         }
 
-        function showAdminDashboard() {
-            const db = document.getElementById('adminDashboard');
-            db.style.display = db.style.display === 'block' ? 'none' : 'block';
-            if (db.style.display === 'block') renderAdminTables();
+        function openAdminDashboard() {
+            document.getElementById('adminDashboardView').style.display = 'block';
+            renderAdminTables();
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('adminDashboardView').style.display = 'none';
         }
 
         function logout() {
@@ -1386,7 +1294,7 @@
             document.getElementById('loginBtn').style.display = 'inline-block';
             document.getElementById('adminNavBtn').style.display = 'none';
             document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('adminDashboard').style.display = 'none';
+            closeAdminDashboard();
         }
 
         function openCommunityModal() { document.getElementById('communityModal').style.display = 'flex'; checkNicknameStatus(); }
@@ -1397,23 +1305,11 @@
                 document.getElementById('nicknamePromptContainer').style.display = 'none';
                 document.getElementById('communityMainContainer').style.display = 'flex';
                 document.getElementById('currentUserBadge').innerText = '👤 ' + currentNickname;
-                document.getElementById('userCreateChannelBtn').style.display = storeData.community.allowPublicChannelCreation ? 'inline-block' : 'none';
-                checkIfUserIsBanned();
                 renderCommunityChannels();
                 renderChatMessages();
             } else {
                 document.getElementById('nicknamePromptContainer').style.display = 'block';
                 document.getElementById('communityMainContainer').style.display = 'none';
-            }
-        }
-
-        function checkIfUserIsBanned() {
-            const b = storeData.community.bannedUsers[currentNickname];
-            const box = document.getElementById('chatInputBoxContainer');
-            if (b && Date.now() < b.expiresAt) {
-                box.innerHTML = `<div style="width: 100%; text-align: center; color: #d32f2f; font-weight: bold;">🚫 أنت محظور مؤقتاً.</div>`;
-            } else {
-                box.innerHTML = `<input type="text" id="chatMessageInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)"><button onclick="sendChatMessage()">إرسال</button>`;
             }
         }
 
@@ -1425,7 +1321,6 @@
             storeData.community.registeredNicknames.push(val);
             currentNickname = val;
             localStorage.setItem('hayDayUserNickname', currentNickname);
-            saveToStorage();
             err.innerText = '';
             checkNicknameStatus();
         }
@@ -1435,17 +1330,13 @@
             if (!list) return;
             list.innerHTML = '';
             storeData.community.channels.forEach(ch => {
-                let link = storeData.community.channelLinks[ch] || encodeURIComponent(ch);
-                let del = (localStorage.getItem('isAdmin') === 'true' && storeData.community.channels.length > 1) ? `<button class="danger-btn" style="padding:1px 4px;font-size:0.7rem;" onclick="adminDeleteChannel('${ch}')">حذف</button>` : '';
-                list.innerHTML += `<li class="channel-item ${activeChannel === ch ? 'active' : ''}" onclick="switchChannel('${ch}')"><div style="display:flex;justify-content:space-between;font-weight:bold;"><span>${ch}</span>${del}</div><a href="#/${link}" class="channel-link-tag" onclick="event.stopPropagation(); switchChannel('${ch}')">🔗 رابط مباشر</a></li>`;
+                list.innerHTML += `<li class="channel-item ${activeChannel === ch ? 'active' : ''}" onclick="switchChannel('${ch}')"><div style="font-weight:bold;"><span>${ch}</span></div></li>`;
             });
-            document.getElementById('currentChannelDescDisplay').innerText = "📌 " + (storeData.community.channelDescriptions[activeChannel] || "بدون وصف");
         }
 
         function switchChannel(ch) {
             activeChannel = ch;
             document.getElementById('currentActiveChannelTitle').innerText = '#' + ch;
-            if (storeData.community.channelLinks[ch]) window.location.hash = '#/' + storeData.community.channelLinks[ch];
             renderCommunityChannels();
             renderChatMessages();
         }
@@ -1456,10 +1347,8 @@
             c.innerHTML = '';
             let msgs = storeData.community.messages[activeChannel] || [];
             if (msgs.length === 0) { c.innerHTML = '<p style="color: #888; text-align: center;">لا توجد رسائل.</p>'; return; }
-            let admin = localStorage.getItem('isAdmin') === 'true';
             msgs.forEach(m => {
-                let act = admin ? `<div class="admin-msg-actions"><button class="del-msg-btn" onclick="adminDeleteMessage(${m.id})">حذف</button><button class="ban-user-btn" onclick="promptBanUser('${m.author}')">حظر</button></div>` : '';
-                c.innerHTML += `<div class="chat-msg"><div class="msg-header"><span class="author">${m.author}</span></div><div class="text">${m.text}</div>${act}</div>`;
+                c.innerHTML += `<div class="chat-msg"><div class="msg-header"><span class="author">${m.author}</span></div><div class="text">${m.text}</div></div>`;
             });
             c.scrollTop = c.scrollHeight;
         }
@@ -1486,8 +1375,8 @@
             const s = document.getElementById('publicCreationStatusText');
             const b = document.getElementById('togglePublicCreationBtn');
             if (!s) return;
-            s.innerText = storeData.community.allowPublicChannelCreation ? "مفتوحة للعامة" : "مغلقة";
-            b.innerText = storeData.community.allowPublicChannelCreation ? "إغلاق" : "فتح للعامة";
+            s.innerText = storeData.community.allowPublicChannelCreation ? "مفتوحة" : "مغلقة";
+            b.innerText = storeData.community.allowPublicChannelCreation ? "إغلاق" : "فتح";
         }
 
         function openUserCreateChannelModal() { document.getElementById('userCreateChannelModal').style.display = 'flex'; }
@@ -1498,7 +1387,6 @@
             if (!name) return;
             let formatted = '👥 ' + name;
             storeData.community.channels.push(formatted);
-            storeData.community.channelLinks[formatted] = 'room-' + Math.random().toString(36).substring(2, 8);
             storeData.community.channelDescriptions[formatted] = "مجموعة أعضاء.";
             saveToStorage();
             closeUserCreateChannelModal();
@@ -1512,41 +1400,17 @@
             if (!name) return;
             let formatted = '📢 ' + name;
             storeData.community.channels.push(formatted);
-            storeData.community.channelLinks[formatted] = 'channel-' + Math.random().toString(36).substring(2, 8);
             storeData.community.channelDescriptions[formatted] = desc || "قناة رسمية.";
             saveToStorage();
             renderAdminTables();
         }
 
-        function adminUpdateChannelDesc(ch) {
-            const val = document.getElementById(`desc_input_${ch}`).value.trim();
-            storeData.community.channelDescriptions[ch] = val;
-            saveToStorage();
-            alert('تم التحديث!');
-        }
-
         function adminDeleteChannel(ch) {
             if (storeData.community.channels.length <= 1) return;
             storeData.community.channels = storeData.community.channels.filter(c => c !== ch);
-            delete storeData.community.channelDescriptions[ch];
-            delete storeData.community.channelLinks[ch];
             if (activeChannel === ch) activeChannel = storeData.community.channels[0];
             saveToStorage();
             renderAdminTables();
-        }
-
-        function adminDeleteMessage(id) {
-            storeData.community.messages[activeChannel] = storeData.community.messages[activeChannel].filter(m => m.id !== id);
-            saveToStorage();
-            renderChatMessages();
-        }
-
-        function promptBanUser(author) {
-            let mins = prompt(`مدة الحظر بالدقائق لـ (${author}):`, "60");
-            if (!mins) return;
-            storeData.community.bannedUsers[author] = { expiresAt: Date.now() + (parseFloat(mins) * 60000) };
-            saveToStorage();
-            alert('تم الحظر.');
         }
 
         function saveStoreSettings() {
@@ -1605,44 +1469,35 @@
             renderAdminTables();
         }
 
-        function addCoupon() {
-            const code = document.getElementById('couponCodeInput').value.trim();
-            const pass = document.getElementById('couponPassInput').value.trim();
-            const discount = document.getElementById('couponDiscountInput').value.trim();
-            if (code && pass && discount) {
-                storeData.coupons.push({ code, pass, discount });
-                saveToStorage();
-                renderAdminTables();
-                alert('تمت الإضافة!');
-            }
-        }
-
-        function deleteCoupon(code) {
-            storeData.coupons = storeData.coupons.filter(c => c.code !== code);
-            saveToStorage();
-            renderAdminTables();
-        }
-
         function renderAdminTables() {
             renderVisitorStatsUI();
             updatePublicCreationStatusUI();
-            renderPendingAdsTable();
-            renderActiveAdsTable();
+
+            const adT = document.getElementById('adminActiveAdsTable');
+            if (adT) {
+                adT.innerHTML = '';
+                if (!storeData.activeAds || storeData.activeAds.length === 0) {
+                    adT.innerHTML = '<tr><td colspan="4" style="text-align: center;">لا توجد إعلانات نشطة.</td></tr>';
+                } else {
+                    storeData.activeAds.forEach((ad, i) => {
+                        let rem = formatTime(Math.max(0, Math.floor((ad.expiresAt - Date.now()) / 1000)));
+                        adT.innerHTML += `<tr><td><strong>${ad.title}</strong><br>${ad.desc || ''}</td><td>${ad.images ? ad.images.length : 0} صور</td><td>ينتهي بعد: ${rem}</td><td><button class="danger-btn" onclick="deleteActiveAd(${i})">حذف</button></td></tr>`;
+                    });
+                }
+            }
 
             const cT = document.getElementById('adminChannelsTable');
             if (cT) {
                 cT.innerHTML = '';
                 storeData.community.channels.forEach(ch => {
-                    let desc = storeData.community.channelDescriptions[ch] || "";
-                    let link = storeData.community.channelLinks[ch] || encodeURIComponent(ch);
-                    cT.innerHTML += `<tr><td><strong>${ch}</strong></td><td><a href="#/${link}" target="_blank">#/${link}</a></td><td><input type="text" id="desc_input_${ch}" value="${desc}" style="width:100%;"><button class="success-btn" style="padding:2px 6px;font-size:0.8rem;" onclick="adminUpdateChannelDesc('${ch}')">حفظ</button></td><td><button class="danger-btn" onclick="adminDeleteChannel('${ch}')">حذف</button></td></tr>`;
+                    cT.innerHTML += `<tr><td><strong>${ch}</strong></td><td>-</td><td>${storeData.community.channelDescriptions[ch] || ''}</td><td><button class="danger-btn" onclick="adminDeleteChannel('${ch}')">حذف</button></td></tr>`;
                 });
             }
 
             const bT = document.getElementById('adminBannersTable');
             if (bT) {
                 bT.innerHTML = '';
-                storeData.banners.forEach((b, i) => { bT.innerHTML += `<tr><td>${b.title}</td><td>${b.sub}</td><td>${b.image ? 'مرفوعة' : 'بدون'}</td><td><button class="danger-btn" onclick="deleteBanner(${i})">حذف</button></td></tr>`; });
+                storeData.banners.forEach((b, i) => { bT.innerHTML += `<tr><td>${b.title}</td><td>${b.sub}</td><td><button class="danger-btn" onclick="deleteBanner(${i})">حذف</button></td></tr>`; });
             }
 
             const catT = document.getElementById('adminCategoriesTable');
@@ -1655,49 +1510,19 @@
             if (pT) {
                 pT.innerHTML = '';
                 storeData.products.forEach(p => {
-                    pT.innerHTML += `<tr><td>${p.title}</td><td>${p.category}</td><td>${p.priceNum} ${p.currency || ''}</td><td>${p.stock || 'غير محدد'}</td><td>${p.desc || ''}</td><td>${p.images ? p.images.length : 0} صور</td><td><button class="danger-btn" onclick="deleteProduct(${p.id})">حذف</button></td></tr>`;
+                    pT.innerHTML += `<tr><td>${p.title}</td><td>${p.category}</td><td>${p.priceNum} ${p.currency || ''}</td><td>${p.stock || '0'}</td><td><button class="danger-btn" onclick="deleteProduct(${p.id})">حذف</button></td></tr>`;
                 });
-            }
-
-            const cpnT = document.getElementById('adminCouponsTable');
-            if (cpnT) {
-                cpnT.innerHTML = '';
-                storeData.coupons.forEach(c => { cpnT.innerHTML += `<tr><td><code>${c.code}</code></td><td><code>${c.pass}</code></td><td>${c.discount}</td><td><button class="danger-btn" onclick="deleteCoupon('${c.code}')">حذف</button></td></tr>`; });
             }
         }
 
         function openBuyModal(title, price) {
-            selectedProductForBuy = { title, price };
             document.getElementById('buyModalTitle').innerText = 'شراء: ' + title;
-            document.getElementById('finalPriceDisplay').innerText = 'السعر: ' + price;
-            document.getElementById('appliedCouponCode').value = '';
-            document.getElementById('appliedCouponPass').value = '';
-            document.getElementById('couponMsg').innerText = '';
-            activeDiscount = 0;
+            document.getElementById('finalPriceDisplay').innerText = 'السعر النهائي: ' + price;
             document.getElementById('buyModal').style.display = 'flex';
         }
 
         function closeBuyModal() { document.getElementById('buyModal').style.display = 'none'; }
-
-        function verifyCoupon() {
-            const code = document.getElementById('appliedCouponCode').value.trim();
-            const pass = document.getElementById('appliedCouponPass').value.trim();
-            const msg = document.getElementById('couponMsg');
-            const found = storeData.coupons.find(c => c.code === code && c.pass === pass);
-            if (found) {
-                msg.style.color = 'green';
-                msg.innerText = '✅ تم تطبيق الخصم: ' + found.discount;
-            } else {
-                msg.style.color = 'red';
-                msg.innerText = '❌ الكود أو الباسورد غير صحيح!';
-            }
-        }
-
-        function confirmPurchase() {
-            alert('تم تأكيد الشراء بنجاح! سنتواصل معك قريباً.');
-            closeBuyModal();
-        }
+        function confirmPurchase() { alert('تمت العملية بنجاح!'); closeBuyModal(); }
     </script>
 </body>
 </html>
-
