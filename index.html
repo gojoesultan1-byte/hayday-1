@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">متجر كوكب هاي داي - الحسابات المميزة</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #4caf50;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --accent-color: #ff9800;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-buttons button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* سلايدر البانر الإعلاني بعرض الموقع (طراز شي إن) */
+        .shein-banner {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            background-color: #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .shein-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shein-slide.active {
+            opacity: 1;
+        }
+
+        .shein-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .shein-caption {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 6px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .shein-caption h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .shein-caption p {
+            font-size: 1.1rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .categories-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .category-tab {
+            background: #e0e0e0;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .category-tab.active, .category-tab:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* رسالة زاوية قسم الإعلانات */
+        .ads-corner-badge {
+            position: absolute;
+            top: -10px;
+            left: 5px;
+            background: #d32f2f;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: pulseBadge 1.5s infinite;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+
+        @keyframes pulseBadge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-container {
+            position: relative;
+            height: 180px;
+            background-color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .card-img-container img.active {
+            display: block;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50%;
+            z-index: 10;
+            transition: 0.3s;
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .slider-prev { right: 10px; }
+        .slider-next { left: 10px; }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.8rem 0;
+            font-size: 0.95rem;
+        }
+
+        .card-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .card-stock {
+            background: #e8f5e9;
+            color: var(--primary-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .buy-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .image-slots-wrapper {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .image-slot {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            background: #fafafa;
+            overflow: hidden;
+        }
+
+        .image-slot input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-slot span {
+            font-size: 1.5rem;
+            color: #888;
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* لوحة المشرف */
+        #adminDashboard {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #adminDashboard h2, #adminDashboard h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-table th, .admin-table td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: right;
+        }
+
+        .admin-table th {
+            background-color: var(--bg-color);
+        }
+
+        .danger-btn {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .success-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            padding: 1.2rem;
+            border-radius: 8px;
+            border-right: 5px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h4 {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* واجهة مجتمع هاي داي الدردشة */
+        #communityModal .modal-content {
+            max-width: 1000px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .community-layout {
+            display: flex;
+            height: calc(100% - 40px);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .community-sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+        }
+
+        .channels-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-top: 0.5rem;
+        }
+
+        .channel-item {
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            background: #fff;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .channel-item:hover, .channel-item.active {
+            border-color: var(--primary-color);
+            background-color: #f1f8f1;
+        }
+
+        .channel-link-tag {
+            font-size: 0.75rem;
+            color: #0277bd;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        .community-chat-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #fdfdfd;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .chat-msg {
+            background: #f1f3f5;
+            padding: 0.6rem 0.9rem;
+            border-radius: 8px;
+            max-width: 80%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-msg .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.2rem;
+        }
+
+        .chat-msg .author {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .chat-msg .text {
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .admin-msg-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 4px;
+        }
+
+        .admin-msg-actions button {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .del-msg-btn {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .ban-user-btn {
+            background-color: #e65100;
+            color: white;
+        }
+
+        .chat-input-box {
+            display: flex;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            gap: 0.5rem;
+        }
+
+        .chat-input-box input {
+            flex-grow: 1;
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-input-box button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <div class="logo" id="headerLogoText">🌾 Hay Day Store</div>
+        <div class="nav-buttons">
+            <button onclick="openCommunityModal()" style="background-color: #2e7d32; border: 1px solid #fff;">مجتمع هاي داي</button>
+            <button id="loginBtn" onclick="openLoginModal()">تسجيل الدخول</button>
+            <button id="adminNavBtn" style="display: none;" onclick="showAdminDashboard()">لوحة المشرف</button>
+            <button id="logoutBtn" style="display: none; background-color: #d32f2f;" onclick="logout()">تسجيل الخروج</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- بانر الإعلانات المتحرك كل 3 ثواني بعرض الموقع -->
+        <div class="shein-banner" id="sheinBannerContainer"></div>
+
+        <div class="hero">
+            <h1 id="heroTitle">مرحباً بك في متجر حسابات هاي داي</h1>
+            <p id="heroSubtitle">اختر حسابك المفضل وتمتع بمستويات متقدمة وموارد ضخمة</p>
+        </div>
+
+        <div class="categories-bar" id="categoriesBar"></div>
+        <div class="products-grid" id="productsGrid"></div>
+
+        <div id="adminDashboard">
+            <h2>لوحة تحكم المشرف الشاملة</h2>
+            <p>إدارة كاملة للمتجر، إحصائيات الزوار، عروض البانر، الأقسام، والحسابات.</p>
+
+            <!-- قسم إدارة إعلانات الأعضاء الواردة -->
+            <h3>إدارة إعلانات الأعضاء (الطلبات الواردة واختيار مدة العرض)</h3>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">هنا تجد الإعلانات التي أرسلها الأعضاء من قسم "📢 إعلانات الأعضاء". حدد مدة النشر المناسبة لكل إعلان (من ساعة إلى 7 أيام) قبل نشره ليتم حذفه تلقائياً عند انتهاء الوقت.</p>
+            <table class="admin-table">
+                <thead><tr><th>صاحب الإعلان</th><th>تفاصيل الإعلان</th><th>اختر مدة الظهور</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminPendingAdsTable"></tbody>
+            </table>
+
+            <h3>إدارة إعلانات الأعضاء النشطة حالياً</h3>
+            <table class="admin-table">
+                <thead><tr><th>العنوان / التفاصيل</th><th>ينتهي في</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminActiveAdsTable"></tbody>
+            </table>
+
+            <!-- قسم إدارة مجتمع هاي داي -->
+            <h3>إدارة مجتمع هاي داي (القنوات، الروابط الخاصة، والأوصاف)</h3>
+            
+            <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>صلاحية إنشاء القنوات والمجموعات للعامة:</strong>
+                    <div id="publicCreationStatusText" style="font-size: 0.9rem; color: #666; margin-top: 2px;">مغلقة (أنت وحدك من تستطيع الإنشاء حالياً)</div>
+                </div>
+                <button id="togglePublicCreationBtn" class="success-btn" style="margin-top:0;" onclick="togglePublicCreationPermission()">فتح للعامة</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
+                <input type="text" id="newChannelNameInput" placeholder="اسم القناة أو الجروب الجديد (مثلاً: 📢-الإعلانات)">
+                <textarea id="newChannelDescInput" placeholder="اكتب وصفاً لهذه القناة/المجموعة (أنت وحدك من تملك صلاحية كتابته وتعديله)" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; resize: vertical; height: 70px;"></textarea>
+                <button class="success-btn" style="margin-top:0;" onclick="adminCreateChannel()">إنشاء القناة مع الرابط المباشر والوصف</button>
+            </div>
+            
+            <table class="admin-table">
+                <thead><tr><th>اسم القناة</th><th>الرابط الخاص المباشر</th><th>الوصف الحالي (تعديل حصري)</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminChannelsTable"></tbody>
+            </table>
+
+            <!-- إحصائيات الزوار -->
+            <h3>إحصائيات الزوار ووقت التواجد في الموقع</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>إجمالي عدد الزوار (الزيارات):</h4>
+                    <div class="stat-value" id="statTotalVisits">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>أقصى مدة قضاها زائر بالموقع:</h4>
+                    <div class="stat-value" id="statMaxTime">0 ثانية</div>
+                </div>
+                <div class="stat-card">
+                    <h4>متوسط وقت الجلسة الحالية:</h4>
+                    <div class="stat-value" id="statCurrentTime">0 ثانية</div>
+                </div>
+            </div>
+            <button class="danger-btn" onclick="resetVisitorStats()">تصفير عداد الإحصائيات</button>
+
+            <h3>إدارة بانر الإعلانات الرئيسي (عرض الموقع - طراز شي إن)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="bannerTitle" placeholder="العنوان شبه الشفاف (مثلاً: عروض العيد الكبرى)">
+                <input type="text" id="bannerSub" placeholder="الوصف الفرعي (مثلاً: خصم يصل إلى 50%)">
+            </div>
+            <div class="form-group">
+                <label>صورة البانر (اختر من الجهاز):</label>
+                <div class="image-slots-wrapper" id="bannerImageSlotContainer">
+                    <div class="image-slot">
+                        <span>+</span>
+                        <input type="file" accept="image/*" id="bannerImageInput" onchange="handleBannerImageUpload(this)">
+                    </div>
+                </div>
+            </div>
+            <button class="success-btn" onclick="addBannerSlide()">إضافة بانر جديد للعروض</button>
+            <table class="admin-table" style="margin-top: 1rem;">
+                <thead><tr><th>العنوان</th><th>الوصف</th><th>الصورة</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminBannersTable"></tbody>
+            </table>
+
+            <h3>تخصيص ألوان الموقع بالكامل</h3>
+            <div class="color-picker-grid">
+                <div class="form-group">
+                    <label>اللون الأساسي (Primary):</label>
+                    <input type="color" id="colorPrimary" value="#2e7d32">
+                </div>
+                <div class="form-group">
+                    <label>اللون الثانوي (Secondary):</label>
+                    <input type="color" id="colorSecondary" value="#4caf50">
+                </div>
+                <div class="form-group">
+                    <label>لون الخلفية العامة (Background):</label>
+                    <input type="color" id="colorBg" value="#f4f6f8">
+                </div>
+                <div class="form-group">
+                    <label>لون أزرار التميز/الأسعار (Accent):</label>
+                    <input type="color" id="colorAccent" value="#ff9800">
+                </div>
+            </div>
+            <button class="success-btn" onclick="saveColorsSettings()">حفظ وتطبيق الألوان</button>
+
+            <h3>تعديل أسماء وعناوين المتجر</h3>
+            <div class="form-group">
+                <label>اسم المتجر:</label>
+                <input type="text" id="settingStoreName" value="🌾 Hay Day Store">
+            </div>
+            <div class="form-group">
+                <label>العنوان الرئيسي:</label>
+                <input type="text" id="settingHeroTitle" value="مرحباً بك في متجر حسابات هاي داي">
+            </div>
+            <div class="form-group">
+                <label>العنوان الفرعي:</label>
+                <input type="text" id="settingHeroSub" value="اختر حسابك المفضل وتمتع بمستويات متقدمة وموارد ضخمة">
+            </div>
+            <button class="success-btn" onclick="saveStoreSettings()">حفظ إعدادات المتجر</button>
+
+            <h3>إدارة أقسام المتجر</h3>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="newCategoryName" placeholder="اسم القسم الجديد">
+                <button class="success-btn" style="margin-top:0;" onclick="addCategory()">إضافة قسم</button>
+            </div>
+            <table class="admin-table">
+                <thead><tr><th>اسم القسم</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminCategoriesTable"></tbody>
+            </table>
+
+            <h3>إدارة المنتجات والحسابات (مع إدخال الوصف، الكمية، والعملة يدوياً)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="prodTitle" placeholder="اسم الحساب/المنتج">
+                <select id="prodCategorySelect"></select>
+                <input type="number" id="prodPriceNum" placeholder="سعر السلعة (رقم فقط مثل: 500 أو 1200)">
+                <input type="text" id="prodCurrency" placeholder="اكتب العملة بايدك (مثل: جنيه، دولار، مليون ذهبية)">
+                <input type="number" id="prodStock" placeholder="الكمية المتوفرة (مثل: 5)">
+                <textarea id="prodDesc" placeholder="اكتب وصفاً تفصيلياً للسلعة..." style="grid-column: span 2; height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>صور الحساب (اضغط على علامة + لإضافة خانة صورة جديدة وتحميلها من جهازك):</label>
+                <div class="image-slots-wrapper" id="imageSlotsContainer"></div>
+            </div>
+            <button class="success-btn" onclick="addProduct()">إنشاء منتج جديد بالصور والوصف والعملة والكمية</button>
+
+            <table class="admin-table" style="margin-top: 1rem;">
+                <thead><tr><th>المنتج</th><th>القسم</th><th>السعر والعملة</th><th>الكمية</th><th>الوصف</th><th>الصور</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminProductsTable"></tbody>
+            </table>
+
+            <h3>إدارة قسائم الخصم وكلمات المرور</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <input type="text" id="couponCodeInput" placeholder="كود القسيمة">
+                <input type="text" id="couponPassInput" placeholder="الباسورد الخاص">
+                <input type="text" id="couponDiscountInput" placeholder="قيمة الخصم (مثلاً: 20%)">
+            </div>
+            <button class="success-btn" onclick="addCoupon()">إضافة قسيمة جديدة</button>
+            <table class="admin-table" style="margin-top: 1rem;">
+                <thead><tr><th>كود القسيمة</th><th>الباسورد</th><th>الخصم</th><th>الإجراء</th></tr></thead>
+                <tbody id="adminCouponsTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- نافذة إرسال الإعلان الممول للأعضاء -->
+    <div id="submitAdModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeSubmitAdModal()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">طلب إعلان ممول جديد</h3>
+            <div style="background: #e8f5e9; color: var(--primary-color); padding: 0.5rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; margin-bottom: 1rem;">
+                اكتب تفاصيل مصغره عن اعلانك بالوقت الي تريده
+            </div>
+            <div class="form-group">
+                <label>اسمك أو اسم مزرعتك:</label>
+                <input type="text" id="adAuthorInput" placeholder="مثلاً: مزرعة السطوح">
+            </div>
+            <div class="form-group">
+                <label>تفاصيل الإعلان (المحتوى والعرض):</label>
+                <textarea id="adContentInput" placeholder="اكتب تفاصيل إعلانك هنا..." style="height: 100px; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; width: 100%; resize: vertical;"></textarea>
+            </div>
+            <button class="submit-btn" onclick="submitUserAd()">إرسال للمشرف للمراجعة والنشر</button>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">تسجيل الدخول</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="email" required placeholder="أدخل البريد الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="password" required placeholder="أدخل كلمة المرور">
+                    <div id="errorMsg" class="error-msg">البريد الإلكتروني أو كلمة المرور غير صحيحة.</div>
+                </div>
+                <button type="submit" class="submit-btn">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة مجتمع هاي داي -->
+    <div id="communityModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCommunityModal()">&times;</span>
+            <h2 style="color: var(--primary-color);">🌾 مجتمع هاي داي العام</h2>
+            <div id="nicknamePromptContainer" style="margin-top: 1rem;">
+                <p style="margin-bottom: 0.5rem; color: #555;">أدخل اسمك المستعار أو اسم مزرعتك للدخول إلى المجتمع (لا يمكن تكرار الاسم المأخوذ):</p>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="userNicknameInput" placeholder="مثلاً: مزرعة السطوح أو كابتن أحمد">
+                    <button class="success-btn" style="margin-top:0;" onclick="joinCommunity()">دخول المجتمع</button>
+                </div>
+                <div id="nicknameErrorMsg" class="error-msg" style="display:block; margin-top: 0.5rem;"></div>
+            </div>
+
+            <div id="communityMainContainer" class="community-layout" style="display: none;">
+                <div class="community-sidebar">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-weight: bold; font-size: 0.9rem; color: #555;">قنوات المجتمع:</span>
+                        <button id="userCreateChannelBtn" style="display: none; background: var(--primary-color); color: white; border: none; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;" onclick="openUserCreateChannelModal()">+ إنشاء مجموعة</button>
+                    </div>
+                    <ul class="channels-list" id="communityChannelsList"></ul>
+                </div>
+                <div class="community-chat-area">
+                    <div style="padding: 0.6rem 1rem; background: #f1f3f5; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span id="currentActiveChannelTitle" style="font-weight: bold; display: block;"># الدردشة العامة</span>
+                            <span id="currentChannelDescDisplay" style="font-size: 0.8rem; color: #666;"></span>
+                        </div>
+                        <span id="currentUserBadge" style="font-size: 0.85rem; color: var(--primary-color); background: #e8f5e9; padding: 0.2rem 0.5rem; border-radius: 4px;"></span>
+                    </div>
+                    <div class="chat-messages" id="chatMessagesContainer"></div>
+                    <div class="chat-input-box" id="chatInputBoxContainer">
+                        <input type="text" id="chatMessageInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+                        <button onclick="sendChatMessage()">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء مجموعة للمستخدمين -->
+    <div id="userCreateChannelModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeUserCreateChannelModal()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">إنشاء مجموعة أو قناة جديدة</h3>
+            <div class="form-group">
+                <label>اسم المجموعة:</label>
+                <input type="text" id="userNewChanName" placeholder="مثلاً: مقايضة المحاصيل">
+            </div>
+            <button class="submit-btn" onclick="userCreateChannelSubmit()">إنشاء</button>
+        </div>
+    </div>
+
+    <!-- نافذة الشراء -->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeBuyModal()">&times;</span>
+            <h2 id="buyModalTitle" style="margin-bottom: 1rem; color: var(--primary-color);">شراء المنتج</h2>
+            <div class="form-group">
+                <label>هل تملك قسيمة خصم وباسورد خاص بها؟</label>
+                <input type="text" id="appliedCouponCode" placeholder="أدخل كود القسيمة">
+                <input type="password" id="appliedCouponPass" placeholder="أدخل باسورد القسيمة" style="margin-top: 0.5rem;">
+                <button class="success-btn" type="button" onclick="verifyCoupon()">تحقيق وتطبيق القسيمة</button>
+                <div id="couponMsg" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+            </div>
+            <div id="finalPriceDisplay" style="font-weight: bold; margin-bottom: 1rem; font-size: 1.1rem;"></div>
+            <button class="submit-btn" onclick="confirmPurchase()">تأكيد الشراء</button>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_CREDENTIALS = {
+            e: atob("Z29qb2VzdWx0YW5@Z21haWwuY29t".replace('@', 'm')), 
+            p: atob("YWhtZWRnb2pvMTIzNDU2Nzg5")
+        };
+
+        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV7')) || {
+            settings: {
+                storeName: "🌾 Hay Day Store",
+                heroTitle: "مرحباً بك في متجر حسابات هاي داي",
+                heroSub: "اختر حسابك المفضل وتمتع بمستويات متقدمة وموارد ضخمة",
+                colors: {
+                    primary: "#2e7d32",
+                    secondary: "#4caf50",
+                    bg: "#f4f6f8",
+                    accent: "#ff9800"
+                }
+            },
+            stats: {
+                totalVisits: 0,
+                maxDurationSeconds: 0
+            },
+            banners: [
+                { title: "عروض كوكب هاي داي الكبرى", sub: "احصل على أقوى الحسابات والموارد بأسعار مخفضة لفترة محدودة", image: "" }
+            ],
+            categories: ["حسابات مميزة", "أدوات حظيرة", "عملات ذهبية", "📢 إعلانات الأعضاء"],
+            products: [],
+            pendingAds: [],
+            activeAds: [],
+            coupons: [{ code: "EGYPT2026", pass: "secret123", discount: "20%" }],
+            community: {
+                allowPublicChannelCreation: false,
+                channels: ["💬 الدردشة العامة", "🤝 بيع وشراء الأدوات", "💡 نصائح وأسرار"],
+                channelLinks: {
+                    "💬 الدردشة العامة": "general-chat",
+                    "🤝 بيع وشراء الأدوات": "trade-tools",
+                    "💡 نصائح وأسرار": "tips-secrets"
+                },
+                channelDescriptions: {
+                    "💬 الدردشة العامة": "القناة الرسمية للدردشة العامة وتبادل أطراف الحديث بين المزارعين.",
+                    "🤝 بيع وشراء الأدوات": "مخصص لتبادل وبيع وشراء أدوات الحظيرة والتوسعة بأمان.",
+                    "💡 نصائح وأسرار": "شاركنا أفضل حيل وأسرار لعبة هاي داي لزيادة الإنتاج والخبرة."
+                },
+                registeredNicknames: [],
+                bannedUsers: {},
+                messages: {
+                    "💬 الدردشة العامة": [{ id: 1, author: "المشرف", text: "أهلاً بكم في مجتمع هاي داي العام!" }],
+                    "🤝 بيع وشراء الأدوات": [{ id: 2, author: "المشرف", text: "هنا يمكنكم التبادل والبيع والشراء بحرية." }],
+                    "💡 نصائح وأسرار": [{ id: 3, author: "المشرف", text: "شاركنا أفضل حيل وأسرار اللعبة هنا." }]
+                }
+            }
+        };
+
+        let currentCategory = "الكل";
+        let selectedProductForBuy = null;
+        let activeDiscount = 0;
+        let newImagesArray = [];
+        let tempBannerImage = "";
+        let currentBannerIndex = 0;
+        let bannerInterval = null;
+
+        let currentNickname = localStorage.getItem('hayDayUserNickname') || "";
+        let activeChannel = storeData.community.channels[0] || "💬 الدردشة العامة";
+        let sessionSeconds = 0;
+
+        function saveToStorage() {
+            localStorage.setItem('hayDayStoreDataAdsV7', JSON.stringify(storeData));
+        }
+
+        window.onload = function() {
+            checkExpiredAds();
+            trackVisitorSession();
+            applySettingsToUI();
+            renderSheinBanner();
+            startBannerAutoPlay();
+            renderCategoriesBar();
+            renderProducts(currentCategory);
+            updateUIForAdmin();
+            initImageSlots();
+            
+            checkHashRoute();
+            window.addEventListener('hashchange', checkHashRoute);
+
+            // فحص دوري كل ثانية للإعلانات المنتهية
+            setInterval(checkExpiredAds, 1000);
+        };
+
+        function checkExpiredAds() {
+            if (!storeData.activeAds || storeData.activeAds.length === 0) return;
+            const now = Date.now();
+            let hasChanged = false;
+
+            storeData.activeAds = storeData.activeAds.filter(ad => {
+                if (now >= ad.expiresAt) {
+                    hasChanged = true;
+                    return false;
+                }
+                return true;
+            });
+
+            if (hasChanged) {
+                saveToStorage();
+                if (currentCategory === "📢 إعلانات الأعضاء") {
+                    renderProducts(currentCategory);
+                }
+                if (localStorage.getItem('isAdmin') === 'true') {
+                    renderActiveAdsTable();
+                }
+            }
+        }
+
+        function checkHashRoute() {
+            const hash = window.location.hash.replace('#/', '').replace('#', '');
+            if (!hash) return;
+            
+            for (let chName of storeData.community.channels) {
+                if (storeData.community.channelLinks[chName] === hash) {
+                    activeChannel = chName;
+                    if (document.getElementById('communityModal').style.display === 'flex') {
+                        renderCommunityChannels();
+                        renderChatMessages();
+                    }
+                    break;
+                }
+            }
+        }
+
+        function trackVisitorSession() {
+            if (!sessionStorage.getItem('hasVisited')) {
+                sessionStorage.setItem('hasVisited', 'true');
+                storeData.stats.totalVisits = (storeData.stats.totalVisits || 0) + 1;
+                saveToStorage();
+            }
+
+            setInterval(() => {
+                sessionSeconds++;
+                if (sessionSeconds > (storeData.stats.maxDurationSeconds || 0)) {
+                    storeData.stats.maxDurationSeconds = sessionSeconds;
+                    saveToStorage();
+                }
+                
+                const currTimeEl = document.getElementById('statCurrentTime');
+                if (currTimeEl) {
+                    currTimeEl.innerText = formatTime(sessionSeconds);
+                }
+            }, 1000);
+        }
+
+        function formatTime(totalSecs) {
+            const mins = Math.floor(totalSecs / 60);
+            const secs = totalSecs % 60;
+            if (mins > 0) {
+                return `${mins} دقيقة و ${secs} ثانية`;
+            }
+            return `${secs} ثانية`;
+        }
+
+        function resetVisitorStats() {
+            if (confirm('هل أنت متأكد من تصفير إحصائيات الزوار ووقت التواجد؟')) {
+                storeData.stats.totalVisits = 0;
+                storeData.stats.maxDurationSeconds = sessionSeconds;
+                saveToStorage();
+                renderVisitorStatsUI();
+                alert('تم تصفير الإحصائيات بنجاح.');
+            }
+        }
+
+        function renderVisitorStatsUI() {
+            const totalVisitsEl = document.getElementById('statTotalVisits');
+            const maxTimeEl = document.getElementById('statMaxTime');
+            const currentTimeEl = document.getElementById('statCurrentTime');
+
+            if (totalVisitsEl) totalVisitsEl.innerText = storeData.stats.totalVisits || 0;
+            if (maxTimeEl) maxTimeEl.innerText = formatTime(storeData.stats.maxDurationSeconds || 0);
+            if (currentTimeEl) currentTimeEl.innerText = formatTime(sessionSeconds);
+        }
+
+        function applySettingsToUI() {
+            document.getElementById('headerLogoText').innerText = storeData.settings.storeName;
+            document.getElementById('pageTitle').innerText = storeData.settings.storeName;
+            document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
+            document.getElementById('heroSubtitle').innerText = storeData.settings.heroSub;
+
+            const c = storeData.settings.colors;
+            if (c) {
+                document.documentElement.style.setProperty('--primary-color', c.primary);
+                document.documentElement.style.setProperty('--secondary-color', c.secondary);
+                document.documentElement.style.setProperty('--bg-color', c.bg);
+                document.documentElement.style.setProperty('--accent-color', c.accent);
+
+                document.getElementById('colorPrimary').value = c.primary;
+                document.getElementById('colorSecondary').value = c.secondary;
+                document.getElementById('colorBg').value = c.bg;
+                document.getElementById('colorAccent').value = c.accent;
+            }
+        }
+
+        function renderSheinBanner() {
+            const container = document.getElementById('sheinBannerContainer');
+            if (!container) return;
+            
+            if (!storeData.banners || storeData.banners.length === 0) {
+                container.innerHTML = `<div class="shein-slide active"><div class="shein-caption"><h2>متجر هاي داي</h2><p>أضف عروضك من لوحة المشرف</p></div></div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            storeData.banners.forEach((b, idx) => {
+                let imgTag = b.image ? `<img src="${b.image}">` : `<div style="width:100%;height:100%;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:3rem;">🌾</div>`;
+                container.innerHTML += `
+                    <div class="shein-slide ${idx === currentBannerIndex ? 'active' : ''}">
+                        ${imgTag}
+                        <div class="shein-caption">
+                            <h2>${b.title}</h2>
+                            <p>${b.sub}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function startBannerAutoPlay() {
+            if (bannerInterval) clearInterval(bannerInterval);
+            bannerInterval = setInterval(() => {
+                if (storeData.banners && storeData.banners.length > 1) {
+                    currentBannerIndex = (currentBannerIndex + 1) % storeData.banners.length;
+                    renderSheinBanner();
+                }
+            }, 3000);
+        }
+
+        function handleBannerImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempBannerImage = e.target.result;
+                    const container = document.getElementById('bannerImageSlotContainer');
+                    container.innerHTML = `<div class="image-slot"><img src="${tempBannerImage}" class="active"></div>`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function addBannerSlide() {
+            const title = document.getElementById('bannerTitle').value.trim();
+            const sub = document.getElementById('bannerSub').value.trim();
+
+            if (title || tempBannerImage) {
+                storeData.banners.push({
+                    title: title || "عرض مميز",
+                    sub: sub || "تسوق الآن أفضل الحسابات",
+                    image: tempBannerImage
+                });
+                saveToStorage();
+                renderSheinBanner();
+                renderAdminTables();
+                
+                document.getElementById('bannerTitle').value = '';
+                document.getElementById('bannerSub').value = '';
+                tempBannerImage = "";
+                document.getElementById('bannerImageSlotContainer').innerHTML = `
+                    <div class="image-slot">
+                        <span>+</span>
+                        <input type="file" accept="image/*" id="bannerImageInput" onchange="handleBannerImageUpload(this)">
+                    </div>
+                `;
+                alert('تم إضافة بانر العروض بنجاح!');
+            } else {
+                alert('يرجى كتابة عنوان أو رفع صورة للبانر على الأقل.');
+            }
+        }
+
+        function deleteBanner(index) {
+            storeData.banners.splice(index, 1);
+            saveToStorage();
+            renderSheinBanner();
+            renderAdminTables();
+        }
+
+        function saveColorsSettings() {
+            storeData.settings.colors = {
+                primary: document.getElementById('colorPrimary').value,
+                secondary: document.getElementById('colorSecondary').value,
+                bg: document.getElementById('colorBg').value,
+                accent: document.getElementById('colorAccent').value
+            };
+            saveToStorage();
+            applySettingsToUI();
+            alert('تم حفظ وتحديث ألوان الموقع بنجاح!');
+        }
+
+        function initImageSlots() {
+            const container = document.getElementById('imageSlotsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            newImagesArray.forEach((imgBase64) => {
+                container.innerHTML += `
+                    <div class="image-slot">
+                        <img src="${imgBase64}" class="active">
+                    </div>
+                `;
+            });
+
+            container.innerHTML += `
+                <div class="image-slot">
+                    <span>+</span>
+                    <input type="file" accept="image/*" onchange="handleImageUpload(this)">
+                </div>
+            `;
+        }
+
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newImagesArray.push(e.target.result);
+                    initImageSlots();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function renderCategoriesBar() {
+            const bar = document.getElementById('categoriesBar');
+            if (!bar) return;
+            bar.innerHTML = `<button class="category-tab ${currentCategory === 'الكل' ? 'active' : ''}" onclick="filterCategory('الكل')">الكل</button>`;
+            
+            storeData.categories.forEach(cat => {
+                let badgeHTML = '';
+                if (cat === "📢 إعلانات الأعضاء") {
+                    badgeHTML = `<span class="ads-corner-badge" onclick="event.stopPropagation(); openSubmitAdModal()">تواصل لانشاء اعلان ممول</span>`;
+                }
+                bar.innerHTML += `
+                    <button class="category-tab ${currentCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">
+                        ${cat}
+                        ${badgeHTML}
+                    </button>
+                `;
+            });
+
+            const select = document.getElementById('prodCategorySelect');
+            if (select) {
+                select.innerHTML = '';
+                storeData.categories.forEach(cat => {
+                    select.innerHTML += `<option value="${cat}">${cat}</option>`;
+                });
+            }
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            renderCategoriesBar();
+            renderProducts(cat);
+        }
+
+        function renderProducts(cat) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            let itemsToDisplay = [];
+            if (cat === 'الكل') {
+                itemsToDisplay = [...storeData.products];
+                if (storeData.activeAds) {
+                    storeData.activeAds.forEach(ad => {
+                        itemsToDisplay.push({
+                            id: ad.id,
+                            title: "📢 إعلان ممول: " + ad.author,
+                            desc: ad.content,
+                            price: "إعلان برعاية الأعضاء",
+                            stock: "نشط",
+                            category: "📢 إعلانات الأعضاء",
+                            images: []
+                        });
+                    });
+                }
+            } else if (cat === "📢 إعلانات الأعضاء") {
+                if (storeData.activeAds) {
+                    storeData.activeAds.forEach(ad => {
+                        itemsToDisplay.push({
+                            id: ad.id,
+                            title: "📢 إعلان ممول: " + ad.author,
+                            desc: ad.content,
+                            price: "إعلان برعاية الأعضاء",
+                            stock: "نشط",
+                            category: "📢 إعلانات الأعضاء",
+                            images: []
+                        });
+                    });
+                }
+            } else {
+                itemsToDisplay = storeData.products.filter(p => p.category === cat);
+            }
+
+            if (itemsToDisplay.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">لا توجد منتجات أو إعلانات في هذا القسم حالياً.</p>';
+                return;
+            }
+
+            itemsToDisplay.forEach((p) => {
+                let imagesHTML = '';
+                let sliderBtns = '';
+                
+                if (p.images && p.images.length > 0) {
+                    p.images.forEach((img, i) => {
+                        imagesHTML += `<img src="${img}" class="${i === 0 ? 'active' : ''}">`;
+                    });
+                    if (p.images.length > 1) {
+                        sliderBtns = `
+                            <button class="slider-btn slider-prev" onclick="changeSlide(${p.id}, -1)">❮</button>
+                            <button class="slider-btn slider-next" onclick="changeSlide(${p.id}, 1)">❯</button>
+                        `;
+                    }
+                } else {
+                    imagesHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">📢</div>`;
+                }
+
+                let displayPrice = (p.priceNum !== undefined && p.priceNum !== "") ? `${p.priceNum} ${p.currency || ''}` : p.price;
+                let stockText = (p.stock !== undefined && p.stock !== "") ? `الكمية المتاحة: ${p.stock}` : 'متوفر';
+                let descText = p.desc ? `<p class="card-desc">${p.desc}</p>` : '';
+
+                let actionBtnHTML = `<button class="buy-btn" onclick="openBuyModal('${p.title}', '${displayPrice}')">شراء الحساب</button>`;
+                if (p.category === "📢 إعلانات الأعضاء") {
+                    actionBtnHTML = `<button class="buy-btn" style="background-color: var(--accent-color);" onclick="openSubmitAdModal()">اعلن معنا الآن</button>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-img-container" id="container_${p.id}">
+                            ${imagesHTML}
+                            ${sliderBtns}
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <h3 class="card-title">${p.title}</h3>
+                                ${descText}
+                                <div class="card-meta">
+                                    <div class="card-price">${displayPrice}</div>
+                                    <div class="card-stock">${stockText}</div>
+                                </div>
+                            </div>
+                            ${actionBtnHTML}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function changeSlide(prodId, direction) {
+            const container = document.getElementById(`container_${prodId}`);
+            if(!container) return;
+            const imgs = container.querySelectorAll('img');
+            if (imgs.length <= 1) return;
+
+            let currentIndex = 0;
+            imgs.forEach((img, idx) => {
+                if (img.classList.contains('active')) {
+                    currentIndex = idx;
+                    img.classList.remove('active');
+                }
+            });
+
+            let newIndex = (currentIndex + direction + imgs.length) % imgs.length;
+            imgs[newIndex].classList.add('active');
+        }
+
+        function openSubmitAdModal() {
+            document.getElementById('submitAdModal').style.display = 'flex';
+        }
+        function closeSubmitAdModal() {
+            document.getElementById('submitAdModal').style.display = 'none';
+        }
+
+        function submitUserAd() {
+            const author = document.getElementById('adAuthorInput').value.trim();
+            const content = document.getElementById('adContentInput').value.trim();
+
+            if (!author || !content) {
+                alert('يرجى إدخال اسمك وتفاصيل الإعلان.');
+                return;
+            }
+
+            if (!storeData.pendingAds) storeData.pendingAds = [];
+            storeData.pendingAds.push({
+                id: Date.now(),
+                author,
+                content
+            });
+
+            saveToStorage();
+            document.getElementById('adAuthorInput').value = '';
+            document.getElementById('adContentInput').value = '';
+            closeSubmitAdModal();
+            alert('تم إرسال إعلانك بنجاح إلى لوحة المشرف للمراجعة والنشر.');
+            if (localStorage.getItem('isAdmin') === 'true') {
+                renderAdminTables();
+            }
+        }
+
+        function renderPendingAdsTable() {
+            const table = document.getElementById('adminPendingAdsTable');
+            if (!table) return;
+            table.innerHTML = '';
+
+            if (!storeData.pendingAds || storeData.pendingAds.length === 0) {
+                table.innerHTML = '<tr><td colspan="4" style="text-align: center;">لا توجد طلبات إعلانات جديدة معلقة حالياً.</td></tr>';
+                return;
+            }
+
+            // توليد خيارات الساعات من 1 لـ 24 والأيام من 1 لـ 7
+            let durationOptionsHTML = '';
+            for (let h = 1; h <= 24; h++) {
+                durationOptionsHTML += `<option value="${h * 3600000}">${h} ساعة</option>`;
+            }
+            for (let d = 1; d <= 7; d++) {
+                durationOptionsHTML += `<option value="${d * 86400000}">${d} يوم (${d === 1 ? 'يوم واحد' : d + ' أيام'})</option>`;
+            }
+
+            storeData.pendingAds.forEach((ad, index) => {
+                table.innerHTML += `
+                    <tr>
+                        <td><strong>${ad.author}</strong></td>
+                        <td>${ad.content}</td>
+                        <td>
+                            <select id="ad_duration_${ad.id}" style="padding: 5px; width: 100%;">
+                                ${durationOptionsHTML}
+                            </select>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="success-btn" style="margin-top:0; padding: 4px 8px; font-size: 0.8rem;" onclick="approveAndPublishAd(${index})">نشر الآن</button>
+                                <button class="danger-btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="rejectAd(${index})">رفض</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderActiveAdsTable() {
+            const table = document.getElementById('adminActiveAdsTable');
+            if (!table) return;
+            table.innerHTML = '';
+
+            if (!storeData.activeAds || storeData.activeAds.length === 0) {
+                table.innerHTML = '<tr><td colspan="3" style="text-align: center;">لا توجد إعلانات نشطة حالياً.</td></tr>';
+                return;
+            }
+
+            storeData.activeAds.forEach((ad, index) => {
+                const remainingSecs = Math.max(0, Math.floor((ad.expiresAt - Date.now()) / 1000));
+                let timeStr = formatTime(remainingSecs);
+
+                table.innerHTML += `
+                    <tr>
+                        <td><strong>${ad.author}:</strong> ${ad.content}</td>
+                        <td>متبقي: ${timeStr}</td>
+                        <td><button class="danger-btn" onclick="deleteActiveAd(${index})">حذف فوراً</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function approveAndPublishAd(index) {
+            const ad = storeData.pendingAds[index];
+            const selectEl = document.getElementById(`ad_duration_${ad.id}`);
+            const durationMs = parseInt(selectEl.value);
+
+            const expiresAt = Date.now() + durationMs;
+
+            if (!storeData.activeAds) storeData.activeAds = [];
+            storeData.activeAds.push({
+                id: ad.id,
+                author: ad.author,
+                content: ad.content,
+                expiresAt: expiresAt
+            });
+
+            storeData.pendingAds.splice(index, 1);
+            saveToStorage();
+            renderAdminTables();
+            renderProducts(currentCategory);
+            alert('تم نشر الإعلان بنجاح وسيبقى فعالاً طوال المدة المحددة!');
+        }
+
+        function rejectAd(index) {
+            if (confirm('هل أنت متأكد من رفض وحذف هذا الإعلان؟')) {
+                storeData.pendingAds.splice(index, 1);
+                saveToStorage();
+                renderAdminTables();
+            }
+        }
+
+        function deleteActiveAd(index) {
+            if (confirm('هل تريد حذف هذا الإعلان النشط فوراً؟')) {
+                storeData.activeAds.splice(index, 1);
+                saveToStorage();
+                renderAdminTables();
+                renderProducts(currentCategory);
+            }
+        }
+
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('errorMsg').style.display = 'none'; document.getElementById('loginForm').reset(); }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputEmail = document.getElementById('email').value.trim();
+            const inputPass = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (inputEmail === ADMIN_CREDENTIALS.e && inputPass === ADMIN_CREDENTIALS.p) {
+                localStorage.setItem('isAdmin', 'true');
+                closeLoginModal();
+                updateUIForAdmin();
+                alert('تم تسجيل دخول المشرف بنجاح!');
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function updateUIForAdmin() {
+            if (localStorage.getItem('isAdmin') === 'true') {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('adminNavBtn').style.display = 'inline-block';
+                document.getElementById('logoutBtn').style.display = 'inline-block';
+                renderAdminTables();
+                renderVisitorStatsUI();
+            }
+        }
+
+        function showAdminDashboard() {
+            const dashboard = document.getElementById('adminDashboard');
+            dashboard.style.display = dashboard.style.display === 'block' ? 'none' : 'block';
+            if (dashboard.style.display === 'block') { 
+                renderAdminTables(); 
+                renderVisitorStatsUI();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAdmin');
+            document.getElementById('loginBtn').style.display = 'inline-block';
+            document.getElementById('adminNavBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+            alert('تم تسجيل الخروج بنجاح.');
+        }
+
+        // --- وظائف مجتمع هاي داي والروابط الخاصة ---
+        function openCommunityModal() {
+            document.getElementById('communityModal').style.display = 'flex';
+            checkNicknameStatus();
+        }
+
+        function closeCommunityModal() {
+            document.getElementById('communityModal').style.display = 'none';
+        }
+
+        function checkNicknameStatus() {
+            const promptContainer = document.getElementById('nicknamePromptContainer');
+            const mainContainer = document.getElementById('communityMainContainer');
+            const userCreateBtn = document.getElementById('userCreateChannelBtn');
+
+            if (currentNickname && storeData.community.registeredNicknames.includes(currentNickname)) {
+                promptContainer.style.display = 'none';
+                mainContainer.style.display = 'flex';
+                document.getElementById('currentUserBadge').innerText = '👤 ' + currentNickname;
+                
+                if (storeData.community.allowPublicChannelCreation) {
+                    userCreateBtn.style.display = 'inline-block';
+                } else {
+                    userCreateBtn.style.display = 'none';
+                }
+
+                checkIfUserIsBanned();
+                renderCommunityChannels();
+                renderChatMessages();
+            } else {
+                promptContainer.style.display = 'block';
+                mainContainer.style.display = 'none';
+            }
+        }
+
+        function checkIfUserIsBanned() {
+            const bannedData = storeData.community.bannedUsers[currentNickname];
+            const chatInputBox = document.getElementById('chatInputBoxContainer');
+            
+            if (bannedData && Date.now() < bannedData.expiresAt) {
+                const remainingMins = Math.ceil((bannedData.expiresAt - Date.now()) / 60000);
+                chatInputBox.innerHTML = `<div style="width: 100%; text-align: center; color: #d32f2f; font-weight: bold; padding: 0.5rem;">🚫 تم حظرك من الإرسال في هذا المجتمع لمدة ${remainingMins} دقيقة تقريباً.</div>`;
+            } else {
+                chatInputBox.innerHTML = `
+                    <input type="text" id="chatMessageInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+                    <button onclick="sendChatMessage()">إرسال</button>
+                `;
+            }
+        }
+
+        function joinCommunity() {
+            const inputVal = document.getElementById('userNicknameInput').value.trim();
+            const errDiv = document.getElementById('nicknameErrorMsg');
+
+            if (!inputVal) {
+                errDiv.innerText = '⚠️ يرجى كتابة اسم مستعار أو اسم مزرعة صحيح.';
+                return;
+            }
+
+            if (storeData.community.registeredNicknames.includes(inputVal)) {
+                errDiv.innerText = '❌ هذا الاسم مأخوذ بالفعل ولا يمكن لأحد تقليده! يرجى اختيار اسم آخر.';
+                return;
+            }
+
+            storeData.community.registeredNicknames.push(inputVal);
+            currentNickname = inputVal;
+            localStorage.setItem('hayDayUserNickname', currentNickname);
+            saveToStorage();
+
+            errDiv.innerText = '';
+            document.getElementById('userNicknameInput').value = '';
+            checkNicknameStatus();
+        }
+
+        function renderCommunityChannels() {
+            const listEl = document.getElementById('communityChannelsList');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+
+            if (!storeData.community.channelLinks) storeData.community.channelLinks = {};
+
+            storeData.community.channels.forEach(ch => {
+                let linkId = storeData.community.channelLinks[ch] || encodeURIComponent(ch);
+                
+                let isAdmin = localStorage.getItem('isAdmin') === 'true';
+                let deleteBtnHTML = (isAdmin && storeData.community.channels.length > 1) ? `<button class="danger-btn" style="padding:0.1rem 0.3rem; font-size:0.75rem; float:left;" onclick="adminDeleteChannel('${ch}')">حذف</button>` : '';
+                
+                listEl.innerHTML += `
+                    <li class="channel-item ${activeChannel === ch ? 'active' : ''}" onclick="switchChannel('${ch}')">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
+                            <span>${ch}</span>
+                            ${deleteBtnHTML}
+                        </div>
+                        <a href="#/${linkId}" class="channel-link-tag" onclick="event.stopPropagation(); switchChannel('${ch}')" title="اضغط للانتقال للرابط مباشرة">🔗 رابط مباشر</a>
+                    </li>
+                `;
+            });
+
+            const descDisplay = document.getElementById('currentChannelDescDisplay');
+            if (descDisplay) {
+                let currentDesc = storeData.community.channelDescriptions[activeChannel] || "لا يوجد وصف لهذه القناة حالياً.";
+                descDisplay.innerText = "📌 " + currentDesc;
+            }
+        }
+
+        function switchChannel(chName) {
+            activeChannel = chName;
+            document.getElementById('currentActiveChannelTitle').innerText = '#' + chName;
+            
+            if (storeData.community.channelLinks && storeData.community.channelLinks[chName]) {
+                window.location.hash = '#/' + storeData.community.channelLinks[chName];
+            }
+
+            renderCommunityChannels();
+            renderChatMessages();
+        }
+
+        function renderChatMessages() {
+            const container = document.getElementById('chatMessagesContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!storeData.community.messages[activeChannel]) {
+                storeData.community.messages[activeChannel] = [];
+            }
+
+            const msgs = storeData.community.messages[activeChannel];
+            if (msgs.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; margin-top: 2rem;">لا توجد رسائل في هذه القناة بعد. كن أول المتحدثين!</p>';
+                return;
+            }
+
+            let isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+            msgs.forEach(m => {
+                let adminActionsHTML = '';
+                if (isAdmin) {
+                    adminActionsHTML = `
+                        <div class="admin-msg-actions">
+                            <button class="del-msg-btn" onclick="adminDeleteMessage(${m.id})">حذف من عند الكل 🗑️</button>
+                            <button class="ban-user-btn" onclick="promptBanUser('${m.author}')">حظر العضو ⛔</button>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML += `
+                    <div class="chat-msg" id="msg_${m.id}">
+                        <div class="msg-header">
+                            <span class="author">${m.author}</span>
+                        </div>
+                        <div class="text">${m.text}</div>
+                        ${adminActionsHTML}
+                    </div>
+                `;
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleChatKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const bannedData = storeData.community.bannedUsers[currentNickname];
+            if (bannedData && Date.now() < bannedData.expiresAt) {
+                alert('عذراً، أنت محظور من الإرسال مؤقتاً.');
+                checkIfUserIsBanned();
+                return;
+            }
+
+            const inputEl = document.getElementById('chatMessageInput');
+            if (!inputEl) return;
+            const text = inputEl.value.trim();
+
+            if (!text) return;
+
+            if (!storeData.community.messages[activeChannel]) {
+                storeData.community.messages[activeChannel] = [];
+            }
+
+            storeData.community.messages[activeChannel].push({
+                id: Date.now() + Math.random(),
+                author: currentNickname,
+                text: text
+            });
+
+            saveToStorage();
+            inputEl.value = '';
+            renderChatMessages();
+        }
+
+        function togglePublicCreationPermission() {
+            storeData.community.allowPublicChannelCreation = !storeData.community.allowPublicChannelCreation;
+            saveToStorage();
+            updatePublicCreationStatusUI();
+            alert(storeData.community.allowPublicChannelCreation ? 'تم فتح صلاحية إنشاء المجموعات للعامة!' : 'تم إغلاق صلاحية إنشاء المجموعات لتصبح حكراً عليك وحدك.');
+        }
+
+        function updatePublicCreationStatusUI() {
+            const statusText = document.getElementById('publicCreationStatusText');
+            const toggleBtn = document.getElementById('togglePublicCreationBtn');
+            if (!statusText || !toggleBtn) return;
+
+            if (storeData.community.allowPublicChannelCreation) {
+                statusText.innerText = "مفتوحة (يمكن للعامة إنشاء مجموعات الآن)";
+                toggleBtn.innerText = "إغلاق وقصر الإنشاء عليك";
+                toggleBtn.style.backgroundColor = "#d32f2f";
+            } else {
+                statusText.innerText = "مغلقة (أنت وحدك من تستطيع الإنشاء حالياً)";
+                toggleBtn.innerText = "فتح للعامة";
+                toggleBtn.style.backgroundColor = "var(--primary-color)";
+            }
+        }
+
+        function openUserCreateChannelModal() {
+            document.getElementById('userCreateChannelModal').style.display = 'flex';
+        }
+        function closeUserCreateChannelModal() {
+            document.getElementById('userCreateChannelModal').style.display = 'none';
+        }
+
+        function userCreateChannelSubmit() {
+            const inputEl = document.getElementById('userNewChanName');
+            const name = inputEl.value.trim();
+            if (!name) return;
+
+            let formatted = name.startsWith('👥') ? name : '👥 ' + name;
+            if (storeData.community.channels.includes(formatted)) {
+                alert('هذا الاسم موجود مسبقاً.');
+                return;
+            }
+
+            let linkKey = 'room-' + Math.random().toString(36).substring(2, 8);
+            storeData.community.channels.push(formatted);
+            if (!storeData.community.channelLinks) storeData.community.channelLinks = {};
+            storeData.community.channelLinks[formatted] = linkKey;
+
+            storeData.community.channelDescriptions[formatted] = "مجموعة أنشأها أحد أعضاء المجتمع (بانتظار إضافة وصف خاص من المشرف).";
+            storeData.community.messages[formatted] = [{ id: Date.now(), author: "المشرف", text: "أهلاً بكم في هذه المجموعة الجديدة." }];
+
+            saveToStorage();
+            inputEl.value = '';
+            closeUserCreateChannelModal();
+            renderCommunityChannels();
+            switchChannel(formatted);
+            alert('تم إنشاء المجموعة مع رابطها المباشر بنجاح!');
+        }
+
+        function adminCreateChannel() {
+            const inputEl = document.getElementById('newChannelNameInput');
+            const descInput = document.getElementById('newChannelDescInput');
+            const name = inputEl.value.trim();
+            const desc = descInput.value.trim();
+
+            if (!name) {
+                alert('يرجى كتابة اسم القناة الجديدة.');
+                return;
+            }
+
+            let formattedName = name.startsWith('#') || name.startsWith('💬') || name.startsWith('📢') || name.startsWith('🤝') || name.startsWith('💡') || name.startsWith('👥') ? name : '📢 ' + name;
+
+            if (storeData.community.channels.includes(formattedName)) {
+                alert('هذه القناة موجودة مسبقاً.');
+                return;
+            }
+
+            let linkKey = 'channel-' + Math.random().toString(36).substring(2, 8);
+
+            storeData.community.channels.push(formattedName);
+            if (!storeData.community.channelLinks) storeData.community.channelLinks = {};
+            storeData.community.channelLinks[formattedName] = linkKey;
+
+            storeData.community.channelDescriptions[formattedName] = desc || "قناة رسمية جديدة في متجر هاي داي.";
+            
+            if (!storeData.community.messages[formattedName]) {
+                storeData.community.messages[formattedName] = [{ id: Date.now(), author: "المشرف", text: "تم إنشاء هذه القناة بواسطة المشرف." }];
+            }
+
+            saveToStorage();
+            inputEl.value = '';
+            descInput.value = '';
+            renderAdminTables();
+            alert('تم إنشاء القناة مع رابطها المباشر والوصف الحصري بنجاح!');
+        }
+
+        function adminUpdateChannelDesc(chName) {
+            const descInputEl = document.getElementById(`desc_input_${chName}`);
+            if (!descInputEl) return;
+            const newDesc = descInputEl.value.trim();
+
+            storeData.community.channelDescriptions[chName] = newDesc;
+            saveToStorage();
+            alert(`تم تحديث وصف القناة (${chName}) بنجاح!`);
+            renderCommunityChannels();
+        }
+
+        function adminDeleteChannel(chName) {
+            if (storeData.community.channels.length <= 1) {
+                alert('لا يمكنك حذف جميع القنوات، يجب أن تبقى قناة واحدة على الأقل.');
+                return;
+            }
+
+            if (confirm('هل أنت متأكد من حذف هذه القناة وكل رسائلها ورابطها؟')) {
+                storeData.community.channels = storeData.community.channels.filter(c => c !== chName);
+                delete storeData.community.channelDescriptions[chName];
+                if (storeData.community.channelLinks) delete storeData.community.channelLinks[chName];
+
+                if (activeChannel === chName) {
+                    activeChannel = storeData.community.channels[0];
+                }
+                saveToStorage();
+                renderAdminTables();
+            }
+        }
+
+        function adminDeleteMessage(msgId) {
+            if (localStorage.getItem('isAdmin') !== 'true') return;
+
+            if (confirm('هل تريد حذف هذه الرسالة من عند الكل تماماً بدون أي أثر؟')) {
+                if (storeData.community.messages[activeChannel]) {
+                    storeData.community.messages[activeChannel] = storeData.community.messages[activeChannel].filter(m => m.id !== msgId);
+                    saveToStorage();
+                    renderChatMessages();
+                }
+            }
+        }
+
+        function promptBanUser(targetAuthor) {
+            if (localStorage.getItem('isAdmin') !== 'true') return;
+
+            if (targetAuthor === "المشرف") {
+                alert('لا يمكنك حظر المشرف!');
+                return;
+            }
+
+            let durationMinutes = prompt(`أدخل مدة الحظر (بالدقائق) للعضو (${targetAuthor}):`, "60");
+            if (durationMinutes === null) return;
+
+            let mins = parseFloat(durationMinutes);
+            if (isNaN(mins) || mins <= 0) {
+                alert('يرجى إدخال رقم صحيح يمثل عدد الدقائق.');
+                return;
+            }
+
+            const expiresAt = Date.now() + (mins * 60 * 1000);
+            storeData.community.bannedUsers[targetAuthor] = { expiresAt };
+            saveToStorage();
+
+            alert(`تم حظر العضو (${targetAuthor}) من الإرسال بنجاح لمدة ${mins} دقيقة.`);
+        }
+
+        function saveStoreSettings() {
+            storeData.settings.storeName = document.getElementById('settingStoreName').value;
+            storeData.settings.heroTitle = document.getElementById('settingHeroTitle').value;
+            storeData.settings.heroSub = document.getElementById('settingHeroSub').value;
+            saveToStorage();
+            applySettingsToUI();
+            alert('تم تحديث أسماء وإعدادات المتجر بنجاح!');
+        }
+
+        function addCategory() {
+            const name = document.getElementById('newCategoryName').value.trim();
+            if (name && !storeData.categories.includes(name)) {
+                storeData.categories.push(name);
+                saveToStorage();
+                renderCategoriesBar();
+                renderAdminTables();
+                document.getElementById('newCategoryName').value = '';
+                alert('تم إضافة القسم بنجاح.');
+            } else {
+                alert('القسم موجود مسبقاً أو الحقل فارغ.');
+            }
+        }
+
+        function deleteCategory(catName) {
+            storeData.categories = storeData.categories.filter(c => c !== catName);
+            saveToStorage();
+            renderCategoriesBar();
+            renderAdminTables();
+        }
+
+        function addProduct() {
+            const title = document.getElementById('prodTitle').value.trim();
+            const priceNum = document.getElementById('prodPriceNum').value.trim();
+            const currency = document.getElementById('prodCurrency').value.trim();
+            const stock = document.getElementById('prodStock').value.trim();
+            const desc = document.getElementById('prodDesc').value.trim();
+            const category = document.getElementById('prodCategorySelect').value;
+
+            if (title && priceNum) {
+                storeData.products.push({
+                    id: Date.now(),
+                    title,
+                    priceNum,
+                    currency,
+                    stock,
+                    desc,
+                    category,
+                    images: [...newImagesArray]
+                });
+                saveToStorage();
+                renderProducts(currentCategory);
+                renderAdminTables();
+                
+                document.getElementById('prodTitle').value = '';
+                document.getElementById('prodPriceNum').value = '';
+                document.getElementById('prodCurrency').value = '';
+                document.getElementById('prodStock').value = '';
+                document.getElementById('prodDesc').value = '';
+                newImagesArray = [];
+                initImageSlots();
+                alert('تم إنشاء المنتج بالوصف والكمية والعملة بنجاح.');
+            } else {
+                alert('يرجى كتابة عنوان المنتج والسعر على الأقل.');
+            }
+        }
+
+        function deleteProduct(id) {
+            storeData.products = storeData.products.filter(p => p.id !== id);
+            saveToStorage();
+            renderProducts(currentCategory);
+            renderAdminTables();
+        }
+
+        function addCoupon() {
+            const code = document.getElementById('couponCodeInput').value.trim();
+            const pass = document.getElementById('couponPassInput').value.trim();
+            const discount = document.getElementById('couponDiscountInput').value.trim();
+
+            if (code && pass && discount) {
+                storeData.coupons.push({ code, pass, discount });
+                saveToStorage();
+                renderAdminTables();
+                document.getElementById('couponCodeInput').value = '';
+                document.getElementById('couponPassInput').value = '';
+                document.getElementById('couponDiscountInput').value = '';
+                alert('تم إضافة القسيمة والباسورد الخاص بها بنجاح!');
+            } else {
+                alert('يرجى إكمال حقول القسيمة وباسورد الخصم.');
+            }
+        }
+
+        function deleteCoupon(code) {
+            storeData.coupons = storeData.coupons.filter(c => c.code !== code);
+            saveToStorage();
+            renderAdminTables();
+        }
+
+        function renderAdminTables() {
+            renderVisitorStatsUI();
+            updatePublicCreationStatusUI();
+            renderPendingAdsTable();
+            renderActiveAdsTable();
+
+            const channelsTable = document.getElementById('adminChannelsTable');
+            if (channelsTable) {
+                channelsTable.innerHTML = '';
+                if (!storeData.community.channelDescriptions) storeData.community.channelDescriptions = {};
+                if (!storeData.community.channelLinks) storeData.community.channelLinks = {};
+
+                storeData.community.channels.forEach(ch => {
+                    let currentDesc = storeData.community.channelDescriptions[ch] || "";
+                    let linkKey = storeData.community.channelLinks[ch] || encodeURIComponent(ch);
+
+                    channelsTable.innerHTML += `
+                        <tr>
+                            <td><strong>${ch}</strong></td>
+                            <td><a href="#/${linkKey}" target="_blank" style="font-size:0.85rem; color:#0277bd; word-break:break-all;">#/${linkKey}</a></td>
+                            <td>
+                                <input type="text" id="desc_input_${ch}" value="${currentDesc}" style="width: 100%; padding: 5px; margin-bottom: 4px;" placeholder="اكتب الوصف هنا...">
+                                <button class="success-btn" style="padding: 2px 6px; font-size: 0.8rem; margin-top:0;" onclick="adminUpdateChannelDesc('${ch}')">حفظ التعديل الحصري</button>
+                            </td>
+                            <td><button class="danger-btn" onclick="adminDeleteChannel('${ch}')">حذف القناة</button></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const bannerTable = document.getElementById('adminBannersTable');
+            if (bannerTable) {
+                bannerTable.innerHTML = '';
+                if (storeData.banners) {
+                    storeData.banners.slice().forEach((b, idx) => {
+                        bannerTable.innerHTML += `
+                            <tr>
+                                <td>${b.title}</td>
+                                <td>${b.sub}</td>
+                                <td>${b.image ? 'صورة مرفوعة' : 'بدون صورة'}</td>
+                                <td><button class="danger-btn" onclick="deleteBanner(${idx})">حذف</button></td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            const catTable = document.getElementById('adminCategoriesTable');
+            if (catTable) {
+                catTable.innerHTML = '';
+                storeData.categories.forEach(cat => {
+                    catTable.innerHTML += `<tr><td>${cat}</td><td><button class="danger-btn" onclick="deleteCategory('${cat}')">حذف</button></td></tr>`;
+                });
+            }
+
+            const prodTable = document.getElementById('adminProductsTable');
+            if (prodTable) {
+                prodTable.innerHTML = '';
+                storeData.products.forEach(p => {
+                    let imgCount = p.images ? p.images.length : 0;
+                    let displayPrice = (p.priceNum !== undefined && p.priceNum !== "") ? `${p.priceNum} ${p.currency || ''}` : p.price;
+                    prodTable.innerHTML += `
+                        <tr>
+                            <td>${p.title}</td>
+                            <td>${p.category}</td>
+                            <td>${displayPrice}</td>
+                            <td>${p.stock || 'غير محدد'}</td>
+                            <td>${p.desc ? p.desc.substring(0, 30) + '...' : 'بدون'}</td>
+                            <td>${imgCount} صورة</td>
+                            <td><button class="danger-btn" onclick="deleteProduct(${p.id})">حذف</button></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const couponTable = document.getElementById('adminCouponsTable');
+            if (couponTable) {
+                couponTable.innerHTML = '';
+                storeData.coupons.forEach(c => {
+                    couponTable.innerHTML += `
+                        <tr>
+                            <td><code>${c.code}</code></td>
+                            <td><code>${c.pass}</code></td>
+                            <td>${c.discount}</td>
+                            <td><button class="danger-btn" onclick="deleteCoupon('${c.code}')">حذف</button></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function openBuyModal(title, price) {
+            selectedProductForBuy = { title, price };
+            document.getElementById('buyModalTitle').innerText = 'شراء: ' + title;
+            document.getElementById('finalPriceDisplay').innerText = 'السعر الأصلي: ' + price;
+            document.getElementById('appliedCouponCode').value = '';
+            document.getElementById('appliedCouponPass').value = '';
+            document.getElementById('couponMsg').innerText = '';
+            activeDiscount = 0;
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+
+        function closeBuyModal() { document.getElementById('buyModal').style.display = 'none'; }
+
+        function verifyCoupon() {
+            const inputCode = document.getElementById('appliedCouponCode').value.trim();
+            const inputPass = document.getElementById('appliedCouponPass').value.trim();
+            const msgDiv = document.getElementById('couponMsg');
+
+            const found = storeData.coupons.find(c => c.code === inputCode && c.pass === inputPass);
+
+            if (found) {
+                activeDiscount = found.discount;
+                msgDiv.style.color = 'green';
+                msgDiv.innerText = '✅ تم تطبيق القسيمة بنجاح! نسبة الخصم: ' + found.discount;
+                document.getElementById('finalPriceDisplay').innerText = 'السعر بعد خصم القسيمة (' + found.discount + '): ' + selectedProductForBuy.price;
+            } else {
+                activeDiscount = 0;
+                msgDiv.style.color = 'red';
+                msgDiv.innerText = '❌ كود القسيمة أو الباسورد الخاص به غير صحيح!';
+            }
+        }
+
+        function confirmPurchase() {
+            alert('تم تأكيد طلب شراء (' + selectedProductForBuy.title + ') بنجاح! سنتواصل معك قريباً لاستلام الحساب.');
+            closeBuyModal();
+        }
+    </script>
+</body>
+</html>
