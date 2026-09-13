@@ -100,7 +100,6 @@
         .shein-slide img {
             width: 100%;
             height: 100%;
-            /* يتم التحكم في محاذاة الإطار ديناميكياً حسب رغبة المستخدم */
             object-fit: cover;
         }
 
@@ -140,7 +139,6 @@
             gap: 1rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
-            position: relative;
         }
 
         .category-tab {
@@ -151,7 +149,6 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
-            position: relative;
         }
 
         .category-tab.active, .category-tab:hover {
@@ -211,11 +208,6 @@
             font-weight: bold;
             border-radius: 50%;
             z-index: 10;
-            transition: 0.3s;
-        }
-
-        .slider-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
         }
 
         .slider-prev { right: 10px; }
@@ -301,8 +293,6 @@
             max-width: 450px;
             position: relative;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .close-btn {
@@ -389,7 +379,7 @@
             object-fit: cover;
         }
 
-        /* 🌟 تصميم لوحة الادمن العائمة المتطورة (Floating Glassmorphic Modal) */
+        /* 🌟 لوحة الادمن العائمة المتطورة */
         #adminDashboardView {
             display: none;
             position: fixed;
@@ -397,8 +387,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -408,10 +398,10 @@
         .admin-floating-card {
             background: #ffffff;
             width: 100%;
-            max-width: 1100px;
-            height: 90vh;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 1200px;
+            height: 92vh;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -430,14 +420,14 @@
             padding: 1.25rem 2rem;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .admin-header-top h2 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .admin-body-layout {
@@ -448,46 +438,59 @@
         }
 
         .admin-sidebar-nav {
-            width: 260px;
+            width: 280px;
             background: #ffffff;
             border-left: 1px solid #e2e8f0;
             padding: 1.5rem 1rem;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
             overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.02);
+        }
+
+        .admin-sidebar-title {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+            padding-right: 0.5rem;
         }
 
         .admin-tab-btn {
-            background: transparent;
-            color: #64748b;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            padding: 0.85rem 1.1rem;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             text-align: right;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
+            gap: 12px;
+            font-size: 1rem;
         }
 
         .admin-tab-btn:hover {
             background-color: #f1f5f9;
             color: var(--primary-color);
+            border-color: #cbd5e1;
+            transform: translateX(-4px);
         }
 
         .admin-tab-btn.active {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+            border-color: transparent;
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.25);
+            transform: translateX(-4px);
         }
 
         .admin-content-area {
             flex-grow: 1;
-            padding: 2rem;
+            padding: 2.5rem;
             overflow-y: auto;
             background: #f8fafc;
         }
@@ -498,20 +501,23 @@
 
         .admin-section-pane.active {
             display: block;
-            animation: fadeInPane 0.25s ease-in-out;
+            animation: fadeInPane 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeInPane {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .admin-section-pane h3 {
             color: var(--primary-color);
-            margin-bottom: 1.25rem;
-            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .admin-table {
@@ -520,14 +526,14 @@
             margin-top: 1rem;
             margin-bottom: 1.5rem;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
 
         .admin-table th, .admin-table td {
             border-bottom: 1px solid #edf2f7;
-            padding: 0.85rem 1rem;
+            padding: 1rem 1.2rem;
             text-align: right;
             font-size: 0.95rem;
         }
@@ -542,7 +548,7 @@
             background-color: #ef4444;
             color: white;
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
@@ -555,50 +561,51 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.65rem 1.25rem;
-            border-radius: 6px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             margin-top: 0.5rem;
             transition: 0.2s;
+            font-size: 0.95rem;
         }
-        .success-btn:hover { opacity: 0.9; }
+        .success-btn:hover { opacity: 0.9; box-shadow: 0 4px 10px rgba(46,125,50,0.2); }
 
         .color-picker-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
             margin-bottom: 1.5rem;
         }
 
         .stat-card {
             background: white;
-            padding: 1.2rem;
-            border-radius: 10px;
-            border-right: 5px solid var(--primary-color);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-right: 6px solid var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
         }
 
         .stat-card h4 {
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 0.5rem;
         }
 
         .stat-card .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--primary-color);
         }
 
-        /* واتساب */
+        /* مجتمع هاي داي */
         #communityModal .modal-content {
             max-width: 1000px;
             height: 85vh;
@@ -734,7 +741,7 @@
         <div class="nav-buttons">
             <button onclick="openCommunityModal()" style="background-color: #2e7d32; border: 1px solid #fff;">مجتمع هاي داي</button>
             <button id="loginBtn" onclick="openLoginModal()">تسجيل الدخول</button>
-            <button id="adminNavBtn" style="display: none;" onclick="openAdminDashboard()">لوحة المشرف</button>
+            <button id="adminNavBtn" style="display: none;" onclick="openAdminDashboard()">لوحة المشرف المتقدمة</button>
             <button id="logoutBtn" style="display: none; background-color: #d32f2f;" onclick="logout()">تسجيل الخروج</button>
         </div>
     </header>
@@ -751,30 +758,37 @@
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- لوحة المشرف العائمة -->
+    <!-- لوحة المشرف العائمة المتقدمة -->
     <div id="adminDashboardView">
         <div class="admin-floating-card">
             <div class="admin-header-top">
-                <h2>🛠️ لوحة تحكم المشرف الذكية</h2>
-                <button class="danger-btn" onclick="closeAdminDashboard()" style="padding: 0.4rem 1rem;">✕ إغلاق</button>
+                <h2>🛠️ لوحة تحكم المشرف الذكية والمتقدمة</h2>
+                <button class="danger-btn" onclick="closeAdminDashboard()" style="padding: 0.4rem 1.2rem;">✕ إغلاق</button>
             </div>
 
             <div class="admin-body-layout">
+                <!-- الشريط الجانبي للأزرار المرصوصة تحت بعض -->
                 <div class="admin-sidebar-nav">
+                    <div class="admin-sidebar-title">إدارة المحتوى</div>
                     <button class="admin-tab-btn active" onclick="switchAdminTab('paneAds', this)">📢 الإعلانات النشطة</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneCommunity', this)">👥 إدارة المجتمع</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneStats', this)">📊 الإحصائيات</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneBanners', this)">🖼️ البانر الرئيسي</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneColors', this)">🎨 الألوان</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneSettings', this)">⚙️ إعدادات المتجر</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneCategories', this)">📁 الأقسام</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('paneProducts', this)">🛒 المنتجات</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneProducts', this)">🛒 المنتجات والسلع</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneCategories', this)">📁 الأقسام والتصنيفات</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneBanners', this)">🖼️ البانر الرئيسي والإطار</button>
+                    
+                    <div class="admin-sidebar-title" style="margin-top: 1rem;">إدارة المجتمع</div>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneCommunity', this)">👥 قنوات ومجتمع هاي داي</button>
+                    
+                    <div class="admin-sidebar-title" style="margin-top: 1rem;">الإعدادات والنظام</div>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneStats', this)">📊 إحصائيات الزوار</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneColors', this)">🎨 ألوان المتجر والهوية</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('paneSettings', this)">⚙️ إعدادات النصوص العامة</button>
                 </div>
 
+                <!-- منطقة العرض الرئيسية للواجهة -->
                 <div class="admin-content-area">
                     <!-- قسم 1: إدارة الإعلانات -->
                     <div id="paneAds" class="admin-section-pane active">
-                        <h3>إدارة إعلانات المتجر (إضافة صور وتحديد وقت الحذف)</h3>
+                        <h3>📢 إدارة إعلانات المتجر (نشر وإدارة مدة الحذف التلقائي)</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                             <input type="text" id="adTitleInput" placeholder="عنوان الإعلان">
                             <select id="adDurationSelect">
@@ -792,17 +806,85 @@
                         <textarea id="adDescInput" placeholder="تفاصيل الإعلان..." style="width:100%; padding:0.75rem; border:1px solid #ccc; border-radius:6px; height:80px; margin-bottom:1rem;"></textarea>
                         <button class="success-btn" onclick="adminCreateAd()">نشر الإعلان الآن</button>
 
-                        <h3 style="margin-top: 2rem;">الإعلانات النشطة حالياً</h3>
+                        <h3 style="margin-top: 2.5rem; font-size: 1.2rem;">الإعلانات النشطة حالياً</h3>
                         <table class="admin-table">
                             <thead><tr><th>الإعلان</th><th>الصور</th><th>ينتهي في</th><th>الإجراء</th></tr></thead>
                             <tbody id="adminActiveAdsTable"></tbody>
                         </table>
                     </div>
 
-                    <!-- قسم 2: إدارة المجتمع -->
+                    <!-- قسم 2: المنتجات -->
+                    <div id="paneProducts" class="admin-section-pane">
+                        <h3>🛒 إدارة المنتجات والحسابات</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <input type="text" id="prodTitle" placeholder="اسم الحساب/المنتج">
+                            <select id="prodCategorySelect"></select>
+                            <input type="number" id="prodPriceNum" placeholder="السعر">
+                            <input type="text" id="prodCurrency" placeholder="العملة (جنيه/دولار)">
+                            <input type="number" id="prodStock" placeholder="الكمية">
+                            <textarea id="prodDesc" placeholder="الوصف..." style="grid-column: span 2; height: 80px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>صور المنتج:</label>
+                            <div class="image-slots-wrapper" id="imageSlotsContainer"></div>
+                        </div>
+                        <button class="success-btn" onclick="addProduct()">إنشاء منتج جديد</button>
+                        <table class="admin-table" style="margin-top: 2rem;">
+                            <thead><tr><th>المنتج</th><th>القسم</th><th>السعر</th><th>الكمية</th><th>الإجراء</th></tr></thead>
+                            <tbody id="adminProductsTable"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- قسم 3: الأقسام -->
+                    <div id="paneCategories" class="admin-section-pane">
+                        <h3>📁 إدارة أقسام المتجر</h3>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <input type="text" id="newCategoryName" placeholder="اسم القسم الجديد">
+                            <button class="success-btn" style="margin-top:0;" onclick="addCategory()">إضافة قسم</button>
+                        </div>
+                        <table class="admin-table">
+                            <thead><tr><th>اسم القسم</th><th>الإجراء</th></tr></thead>
+                            <tbody id="adminCategoriesTable"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- قسم 4: البانر الرئيسي والإطار -->
+                    <div id="paneBanners" class="admin-section-pane">
+                        <h3>🖼️ إدارة البانر الرئيسي وتحديد إطار العرض</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <input type="text" id="bannerTitle" placeholder="العنوان">
+                            <input type="text" id="bannerSub" placeholder="الوصف الفرعي">
+                        </div>
+
+                        <div class="form-group">
+                            <label>صورة البانر:</label>
+                            <div class="image-slots-wrapper" id="bannerImageSlotContainer">
+                                <div class="image-slot">
+                                    <span>+</span>
+                                    <input type="file" accept="image/*" onchange="handleBannerImageUpload(this)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; padding: 1.2rem; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
+                            <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">🎛️ ضبط إطار عرض الصورة داخل المستطيل (التركيز الأفقي):</label>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <input type="range" id="bannerPosXRange" min="0" max="100" value="50" style="flex-grow: 1;" oninput="updateBannerPositionPreview()">
+                                <span id="bannerPosVal" style="font-weight: bold; width: 45px;">50%</span>
+                            </div>
+                        </div>
+
+                        <button class="success-btn" onclick="addBannerSlide()">إضافة بانر جديد</button>
+                        <table class="admin-table" style="margin-top: 2rem;">
+                            <thead><tr><th>العنوان</th><th>الوصف</th><th>الإجراء</th></tr></thead>
+                            <tbody id="adminBannersTable"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- قسم 5: مجتمع هاي داي -->
                     <div id="paneCommunity" class="admin-section-pane">
-                        <h3>إدارة مجتمع هاي داي</h3>
-                        <div style="background: white; padding: 1.2rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <h3>👥 إدارة قنوات ومجتمع هاي داي</h3>
+                        <div style="background: white; padding: 1.2rem; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <strong>صلاحية إنشاء القنوات للعامة:</strong>
                                 <div id="publicCreationStatusText" style="font-size: 0.9rem; color: #666; margin-top: 2px;">مغلقة</div>
@@ -815,14 +897,14 @@
                             <button class="success-btn" style="margin-top:0;" onclick="adminCreateChannel()">إنشاء قناة جديدة</button>
                         </div>
                         <table class="admin-table">
-                            <thead><tr><th>اسم القناة</th><th>الرابط</th><th>الوصف</th><th>الإجراء</th></tr></thead>
+                            <thead><tr><th>اسم القناة</th><th>الوصف</th><th>الإجراء</th></tr></thead>
                             <tbody id="adminChannelsTable"></tbody>
                         </table>
                     </div>
 
-                    <!-- قسم 3: الإحصائيات -->
+                    <!-- قسم 6: الإحصائيات -->
                     <div id="paneStats" class="admin-section-pane">
-                        <h3>إحصائيات الزوار</h3>
+                        <h3>📊 إحصائيات الزوار</h3>
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <h4>إجمالي الزيارات:</h4>
@@ -840,43 +922,9 @@
                         <button class="danger-btn" onclick="resetVisitorStats()">تصفير الإحصائيات</button>
                     </div>
 
-                    <!-- قسم 4: البانر الرئيسي مع أداة تحديد الإطار (Object Position) -->
-                    <div id="paneBanners" class="admin-section-pane">
-                        <h3>إدارة البانر الرئيسي وتحديد الإطار</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <input type="text" id="bannerTitle" placeholder="العنوان">
-                            <input type="text" id="bannerSub" placeholder="الوصف الفرعي">
-                        </div>
-
-                        <div class="form-group">
-                            <label>صورة البانر:</label>
-                            <div class="image-slots-wrapper" id="bannerImageSlotContainer">
-                                <div class="image-slot">
-                                    <span>+</span>
-                                    <input type="file" accept="image/*" onchange="handleBannerImageUpload(this)">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- أداة التحكم في إطار وقص الصورة داخل البانر -->
-                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
-                            <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">🎛️ ضبط إطار عرض الصورة داخل المستطيل (التركيز الأفقي/الرأسي):</label>
-                            <div style="display: flex; gap: 1rem; align-items: center;">
-                                <input type="range" id="bannerPosXRange" min="0" max="100" value="50" style="flex-grow: 1;" oninput="updateBannerPositionPreview()">
-                                <span id="bannerPosVal" style="font-weight: bold; width: 45px;">50%</span>
-                            </div>
-                        </div>
-
-                        <button class="success-btn" onclick="addBannerSlide()">إضافة بانر جديد</button>
-                        <table class="admin-table" style="margin-top: 1.5rem;">
-                            <thead><tr><th>العنوان</th><th>الوصف</th><th>الإجراء</th></tr></thead>
-                            <tbody id="adminBannersTable"></tbody>
-                        </table>
-                    </div>
-
-                    <!-- قسم 5: الألوان -->
+                    <!-- قسم 7: الألوان -->
                     <div id="paneColors" class="admin-section-pane">
-                        <h3>تخصيص ألوان المتجر</h3>
+                        <h3>🎨 تخصيص ألوان المتجر</h3>
                         <div class="color-picker-grid">
                             <div class="form-group"><label>اللون الأساسي:</label><input type="color" id="colorPrimary" value="#2e7d32"></div>
                             <div class="form-group"><label>اللون الثانوي:</label><input type="color" id="colorSecondary" value="#4caf50"></div>
@@ -886,48 +934,13 @@
                         <button class="success-btn" onclick="saveColorsSettings()">حفظ الألوان</button>
                     </div>
 
-                    <!-- قسم 6: إعدادات المتجر -->
+                    <!-- قسم 8: إعدادات النصوص -->
                     <div id="paneSettings" class="admin-section-pane">
-                        <h3>إعدادات النصوص العامة</h3>
+                        <h3>⚙️ إعدادات النصوص العامة للمتجر</h3>
                         <div class="form-group"><label>اسم المتجر:</label><input type="text" id="settingStoreName" value="🌾 Hay Day Store"></div>
                         <div class="form-group"><label>العنوان الرئيسي:</label><input type="text" id="settingHeroTitle" value="مرحباً بك في متجر حسابات هاي داي"></div>
                         <div class="form-group"><label>العنوان الفرعي:</label><input type="text" id="settingHeroSub" value="اختر حسابك المفضل"></div>
                         <button class="success-btn" onclick="saveStoreSettings()">حفظ الإعدادات</button>
-                    </div>
-
-                    <!-- قسم 7: الأقسام -->
-                    <div id="paneCategories" class="admin-section-pane">
-                        <h3>إدارة الأقسام</h3>
-                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                            <input type="text" id="newCategoryName" placeholder="اسم القسم الجديد">
-                            <button class="success-btn" style="margin-top:0;" onclick="addCategory()">إضافة قسم</button>
-                        </div>
-                        <table class="admin-table">
-                            <thead><tr><th>القسم</th><th>الإجراء</th></tr></thead>
-                            <tbody id="adminCategoriesTable"></tbody>
-                        </table>
-                    </div>
-
-                    <!-- قسم 8: المنتجات -->
-                    <div id="paneProducts" class="admin-section-pane">
-                        <h3>إدارة المنتجات</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <input type="text" id="prodTitle" placeholder="اسم الحساب/المنتج">
-                            <select id="prodCategorySelect"></select>
-                            <input type="number" id="prodPriceNum" placeholder="السعر">
-                            <input type="text" id="prodCurrency" placeholder="العملة (جنيه/دولار)">
-                            <input type="number" id="prodStock" placeholder="الكمية">
-                            <textarea id="prodDesc" placeholder="الوصف..." style="grid-column: span 2; height: 80px;"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>صور المنتج:</label>
-                            <div class="image-slots-wrapper" id="imageSlotsContainer"></div>
-                        </div>
-                        <button class="success-btn" onclick="addProduct()">إنشاء منتج</button>
-                        <table class="admin-table" style="margin-top: 1.5rem;">
-                            <thead><tr><th>المنتج</th><th>القسم</th><th>السعر</th><th>الكمية</th><th>الإجراء</th></tr></thead>
-                            <tbody id="adminProductsTable"></tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -1008,7 +1021,7 @@
             p: atob("MDEwMDc5MzQwODY2")
         };
 
-        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV10')) || {
+        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV12')) || {
             settings: {
                 storeName: "🌾 Hay Day Store",
                 heroTitle: "مرحباً بك في متجر حسابات هاي داي",
@@ -1023,7 +1036,6 @@
             community: {
                 allowPublicChannelCreation: true,
                 channels: ["💬 الدردشة العامة", "🤝 بيع وشراء الأدوات", "💡 نصائح وأسرار"],
-                channelLinks: { "💬 الدردشة العامة": "general-chat", "🤝 بيع وشراء الأدوات": "trade-tools", "💡 نصائح وأسرار": "tips-secrets" },
                 channelDescriptions: { "💬 الدردشة العامة": "القناة الرسمية للدردشة العامة.", "🤝 بيع وشراء الأدوات": "مخصص لتبادل الأدوات.", "💡 نصائح وأسرار": "شاركنا حيل وأسرار اللعبة." },
                 registeredNicknames: [],
                 bannedUsers: {},
@@ -1041,7 +1053,7 @@
         let activeChannel = storeData.community.channels[0] || "💬 الدردشة العامة";
         let sessionSeconds = 0;
 
-        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV10', JSON.stringify(storeData)); }
+        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV12', JSON.stringify(storeData)); }
 
         window.onload = function() {
             checkExpiredAds();
@@ -1225,7 +1237,7 @@
             };
             saveToStorage();
             applySettingsToUI();
-            alert('تم حفظ الألوان!');
+            alert('تم حفظ الألوان بنجاح!');
         }
 
         function initImageSlots() {
@@ -1438,7 +1450,7 @@
             const c = document.getElementById('chatMessagesContainer');
             if (!c) return;
             
-            const freshData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV10'));
+            const freshData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV12'));
             if (freshData && freshData.community && freshData.community.messages) {
                 storeData.community.messages = freshData.community.messages;
             }
@@ -1562,7 +1574,7 @@
             storeData.settings.heroSub = document.getElementById('settingHeroSub').value;
             saveToStorage();
             applySettingsToUI();
-            alert('تم الحفظ!');
+            alert('تم الحفظ بنجاح!');
         }
 
         function addCategory() {
@@ -1586,7 +1598,10 @@
         function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const priceNum = document.getElementById('prodPriceNum').value.trim();
-            if (!title || !priceNum) return;
+            if (!title || !priceNum) {
+                alert('الرجاء إدخال اسم المنتج والسعر على الأقل.');
+                return;
+            }
             storeData.products.push({
                 id: Date.now(),
                 title,
@@ -1600,9 +1615,17 @@
             saveToStorage();
             renderProducts(currentCategory);
             renderAdminTables();
+            
+            // تفريغ الحقول بعد الحفظ
+            document.getElementById('prodTitle').value = '';
+            document.getElementById('prodPriceNum').value = '';
+            document.getElementById('prodCurrency').value = '';
+            document.getElementById('prodStock').value = '';
+            document.getElementById('prodDesc').value = '';
             newImagesArray = [];
             initImageSlots();
-            alert('تمت الإضافة!');
+            
+            alert('تمت إضافة المنتج بنجاح!');
         }
 
         function deleteProduct(id) {
@@ -1633,7 +1656,7 @@
             if (cT) {
                 cT.innerHTML = '';
                 storeData.community.channels.forEach(ch => {
-                    cT.innerHTML += `<tr><td><strong>${ch}</strong></td><td>-</td><td>${storeData.community.channelDescriptions[ch] || ''}</td><td><button class="danger-btn" onclick="adminDeleteChannel('${ch}')">حذف</button></td></tr>`;
+                    cT.innerHTML += `<tr><td><strong>${ch}</strong></td><td>${storeData.community.channelDescriptions[ch] || ''}</td><td><button class="danger-btn" onclick="adminDeleteChannel('${ch}')">حذف</button></td></tr>`;
                 });
             }
 
