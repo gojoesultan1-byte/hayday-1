@@ -100,6 +100,7 @@
         .shein-slide img {
             width: 100%;
             height: 100%;
+            /* يتم التحكم في محاذاة الإطار ديناميكياً حسب رغبة المستخدم */
             object-fit: cover;
         }
 
@@ -446,7 +447,6 @@
             background: #f8fafc;
         }
 
-        /* شريط جانبي عائم داخل اللوحة لتنقل أنيق بين الأقسام */
         .admin-sidebar-nav {
             width: 260px;
             background: #ffffff;
@@ -598,7 +598,7 @@
             color: var(--primary-color);
         }
 
-        /* تعديلات تصميم الواتساب الحديث لمجتمع هاي داي */
+        /* واتساب */
         #communityModal .modal-content {
             max-width: 1000px;
             height: 85vh;
@@ -648,13 +648,8 @@
             gap: 10px;
         }
 
-        .channel-item:hover {
-            background-color: #f5f6f6;
-        }
-
-        .channel-item.active {
-            background-color: #f0f2f5;
-        }
+        .channel-item:hover { background-color: #f5f6f6; }
+        .channel-item.active { background-color: #f0f2f5; }
 
         .community-chat-area {
             flex-grow: 1;
@@ -686,17 +681,8 @@
             font-size: 0.95rem;
         }
 
-        .chat-msg.incoming {
-            background: #ffffff;
-            align-self: flex-start;
-            border-top-right-radius: 0;
-        }
-
-        .chat-msg.outgoing {
-            background: #d9fdd3;
-            align-self: flex-end;
-            border-top-left-radius: 0;
-        }
+        .chat-msg.incoming { background: #ffffff; align-self: flex-start; border-top-right-radius: 0; }
+        .chat-msg.outgoing { background: #d9fdd3; align-self: flex-end; border-top-left-radius: 0; }
 
         .chat-msg .msg-header {
             display: flex;
@@ -706,18 +692,8 @@
             gap: 15px;
         }
 
-        .chat-msg .author {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #005c4b;
-        }
-
-        .chat-msg .timestamp {
-            font-size: 0.65rem;
-            color: #667781;
-            align-self: flex-end;
-            margin-top: 2px;
-        }
+        .chat-msg .author { font-size: 0.75rem; font-weight: bold; color: #005c4b; }
+        .chat-msg .timestamp { font-size: 0.65rem; color: #667781; align-self: flex-end; margin-top: 2px; }
 
         .chat-input-box {
             display: flex;
@@ -748,10 +724,7 @@
             font-weight: bold;
             transition: 0.2s;
         }
-
-        .chat-input-box button:hover {
-            background-color: #019574;
-        }
+        .chat-input-box button:hover { background-color: #019574; }
     </style>
 </head>
 <body>
@@ -778,7 +751,7 @@
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- 🌟 واجهة لوحة المشرف العائمة المطورة في نص الشاشة -->
+    <!-- لوحة المشرف العائمة -->
     <div id="adminDashboardView">
         <div class="admin-floating-card">
             <div class="admin-header-top">
@@ -787,7 +760,6 @@
             </div>
 
             <div class="admin-body-layout">
-                <!-- الشريط الجانبي للتنقل بين الأقسام داخل اللوحة -->
                 <div class="admin-sidebar-nav">
                     <button class="admin-tab-btn active" onclick="switchAdminTab('paneAds', this)">📢 الإعلانات النشطة</button>
                     <button class="admin-tab-btn" onclick="switchAdminTab('paneCommunity', this)">👥 إدارة المجتمع</button>
@@ -799,7 +771,6 @@
                     <button class="admin-tab-btn" onclick="switchAdminTab('paneProducts', this)">🛒 المنتجات</button>
                 </div>
 
-                <!-- مساحة عرض المحتوى للأقسام -->
                 <div class="admin-content-area">
                     <!-- قسم 1: إدارة الإعلانات -->
                     <div id="paneAds" class="admin-section-pane active">
@@ -869,13 +840,14 @@
                         <button class="danger-btn" onclick="resetVisitorStats()">تصفير الإحصائيات</button>
                     </div>
 
-                    <!-- قسم 4: البانر الرئيسي -->
+                    <!-- قسم 4: البانر الرئيسي مع أداة تحديد الإطار (Object Position) -->
                     <div id="paneBanners" class="admin-section-pane">
-                        <h3>إدارة البانر الرئيسي</h3>
+                        <h3>إدارة البانر الرئيسي وتحديد الإطار</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                             <input type="text" id="bannerTitle" placeholder="العنوان">
                             <input type="text" id="bannerSub" placeholder="الوصف الفرعي">
                         </div>
+
                         <div class="form-group">
                             <label>صورة البانر:</label>
                             <div class="image-slots-wrapper" id="bannerImageSlotContainer">
@@ -885,7 +857,17 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="success-btn" onclick="addBannerSlide()">إضافة بانر</button>
+
+                        <!-- أداة التحكم في إطار وقص الصورة داخل البانر -->
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
+                            <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">🎛️ ضبط إطار عرض الصورة داخل المستطيل (التركيز الأفقي/الرأسي):</label>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <input type="range" id="bannerPosXRange" min="0" max="100" value="50" style="flex-grow: 1;" oninput="updateBannerPositionPreview()">
+                                <span id="bannerPosVal" style="font-weight: bold; width: 45px;">50%</span>
+                            </div>
+                        </div>
+
+                        <button class="success-btn" onclick="addBannerSlide()">إضافة بانر جديد</button>
                         <table class="admin-table" style="margin-top: 1.5rem;">
                             <thead><tr><th>العنوان</th><th>الوصف</th><th>الإجراء</th></tr></thead>
                             <tbody id="adminBannersTable"></tbody>
@@ -965,7 +947,7 @@
         </div>
     </div>
 
-    <!-- مجتمع هاي داي بتصميم الواتساب -->
+    <!-- مجتمع هاي داي -->
     <div id="communityModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeCommunityModal()">&times;</span>
@@ -1026,7 +1008,7 @@
             p: atob("MDEwMDc5MzQwODY2")
         };
 
-        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV9')) || {
+        let storeData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV10')) || {
             settings: {
                 storeName: "🌾 Hay Day Store",
                 heroTitle: "مرحباً بك في متجر حسابات هاي داي",
@@ -1034,7 +1016,7 @@
                 colors: { primary: "#2e7d32", secondary: "#4caf50", bg: "#f4f6f8", accent: "#ff9800" }
             },
             stats: { totalVisits: 0, maxDurationSeconds: 0 },
-            banners: [{ title: "عروض كوكب هاي داي الكبرى", sub: "احصل على أقوى الحسابات والموارد بأسعار مخفضة", image: "" }],
+            banners: [{ title: "عروض كوكب هاي داي الكبرى", sub: "احصل على أقوى الحسابات والموارد بأسعار مخفضة", image: "", objectPosition: "50%" }],
             categories: ["حسابات مميزة", "أدوات حظيرة", "عملات ذهبية", "📢 إعلانات المتجر"],
             products: [],
             activeAds: [],
@@ -1059,7 +1041,7 @@
         let activeChannel = storeData.community.channels[0] || "💬 الدردشة العامة";
         let sessionSeconds = 0;
 
-        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV9', JSON.stringify(storeData)); }
+        function saveToStorage() { localStorage.setItem('hayDayStoreDataAdsV10', JSON.stringify(storeData)); }
 
         window.onload = function() {
             checkExpiredAds();
@@ -1169,7 +1151,8 @@
             }
             container.innerHTML = '';
             storeData.banners.forEach((b, idx) => {
-                let imgTag = b.image ? `<img src="${b.image}">` : `<div style="width:100%;height:100%;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:3rem;">🌾</div>`;
+                let pos = b.objectPosition || "50%";
+                let imgTag = b.image ? `<img src="${b.image}" style="object-position: ${pos} center;">` : `<div style="width:100%;height:100%;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:3rem;">🌾</div>`;
                 container.innerHTML += `<div class="shein-slide ${idx === currentBannerIndex ? 'active' : ''}">${imgTag}<div class="shein-caption"><h2>${b.title}</h2><p>${b.sub}</p></div></div>`;
             });
         }
@@ -1189,24 +1172,40 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     tempBannerImage = e.target.result;
-                    document.getElementById('bannerImageSlotContainer').innerHTML = `<div class="image-slot"><img src="${tempBannerImage}" class="active"></div>`;
+                    let pos = document.getElementById('bannerPosXRange').value + '%';
+                    document.getElementById('bannerImageSlotContainer').innerHTML = `<div class="image-slot"><img src="${tempBannerImage}" class="active" style="object-position: ${pos} center;"></div>`;
                 };
                 reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function updateBannerPositionPreview() {
+            let val = document.getElementById('bannerPosXRange').value;
+            document.getElementById('bannerPosVal').innerText = val + '%';
+            const imgEl = document.querySelector('#bannerImageSlotContainer img');
+            if(imgEl) {
+                imgEl.style.objectPosition = val + '% center';
             }
         }
 
         function addBannerSlide() {
             const title = document.getElementById('bannerTitle').value.trim();
             const sub = document.getElementById('bannerSub').value.trim();
+            const pos = document.getElementById('bannerPosXRange').value + '%';
             if (title || tempBannerImage) {
-                storeData.banners.push({ title: title || "عرض مميز", sub: sub || "تسوق الآن", image: tempBannerImage });
+                storeData.banners.push({ title: title || "عرض مميز", sub: sub || "تسوق الآن", image: tempBannerImage, objectPosition: pos });
                 saveToStorage();
                 renderSheinBanner();
                 renderAdminTables();
                 document.getElementById('bannerTitle').value = '';
                 document.getElementById('bannerSub').value = '';
                 tempBannerImage = "";
+                document.getElementById('bannerPosXRange').value = 50;
+                document.getElementById('bannerPosVal').innerText = "50%";
+                document.getElementById('bannerImageSlotContainer').innerHTML = `<div class="image-slot"><span>+</span><input type="file" accept="image/*" onchange="handleBannerImageUpload(this)"></div>`;
                 alert('تم إضافة البانر بنجاح!');
+            } else {
+                alert('الرجاء إضافة عنوان أو صورة للبانر.');
             }
         }
 
@@ -1265,8 +1264,11 @@
             const title = document.getElementById('adTitleInput').value.trim();
             const desc = document.getElementById('adDescInput').value.trim();
             const durationMs = parseInt(document.getElementById('adDurationSelect').value);
-            if (!title) { alert('أدخل عنوان الإعلان'); return; }
+            
+            if (!title) { alert('أدخل عنوان الإعلان من فضلك.'); return; }
+            
             if (!storeData.activeAds) storeData.activeAds = [];
+            
             storeData.activeAds.push({
                 id: Date.now(),
                 title,
@@ -1274,6 +1276,7 @@
                 images: [...newAdImagesArray],
                 expiresAt: Date.now() + durationMs
             });
+
             saveToStorage();
             document.getElementById('adTitleInput').value = '';
             document.getElementById('adDescInput').value = '';
@@ -1435,7 +1438,7 @@
             const c = document.getElementById('chatMessagesContainer');
             if (!c) return;
             
-            const freshData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV9'));
+            const freshData = JSON.parse(localStorage.getItem('hayDayStoreDataAdsV10'));
             if (freshData && freshData.community && freshData.community.messages) {
                 storeData.community.messages = freshData.community.messages;
             }
